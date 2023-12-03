@@ -17,7 +17,7 @@ dbconnection()
 
 // app.use("/api/v1/auth", router);
 
-app.post('/heloow', (req, res) => {
+app.get('/heloow', (req, res) => {
     return res.send({ Message: "Hellow World" })
 })
 
