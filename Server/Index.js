@@ -15,11 +15,11 @@ app.use(cors())
 
 dbconnection()
 
-// app.use("/api/v1/auth", router);
+app.use("/api/v1/auth", router);
 
-app.get('/', (req, res) => {
-    return res.send({ Message: "Hellow World" })
-})
+// app.get('/', (req, res) => {
+//     return res.send({ Message: "Hellow World" })
+// })
 
 
 
