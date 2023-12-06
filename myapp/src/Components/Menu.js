@@ -48,7 +48,7 @@ export const Menue = (userrole) => {
 }
 
 
-export const urlapi = "http://api.zianshahlegalconsultant.com"
+export const urlapi = "https://api.zianshahlegalconsultant.com"
 // export const urlapi = "https://cms-vusq.onrender.com"
 // http://10.0.2.2:8082/api/v1/auth/entries
 
