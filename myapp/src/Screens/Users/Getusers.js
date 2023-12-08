@@ -86,12 +86,12 @@ const Getusers = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {getuserdata.map((item) => {
+                                {getuserdata.map((item,index) => {
                                     const itemsapproved = item.isUserApproved === false ? "bg-red-200" : "bg-green-200"
                                     return (
                                         <>
                                             <tr className={`${itemsapproved}`}  >
-                                                <td className="border px-4 py-2">1</td>
+                                                <td className="border px-4 py-2">{index+1}</td>
                                                 <td className="border px-4 py-2">Profile Picture</td>
                                                 <td className="border px-4 py-2">{item.name}</td>
                                                 <td className="border px-4 py-2">{item.email}</td>
