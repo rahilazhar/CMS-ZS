@@ -11,7 +11,7 @@ const Getusers = () => {
     }, [])
 
 
-    const handleApprovalChange = async (userid , isUserApproved) => {
+    const handleApprovalChange = async (userid, isUserApproved) => {
         try {
             // const token = sessionStorage.getItem('token') // Or wherever the token is stored
 
@@ -86,13 +86,19 @@ const Getusers = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {getuserdata.map((item,index) => {
+                                {getuserdata.map((item, index) => {
+                                    const {profilePicture} = item;
+                                    console.log(profilePicture , "profilepicture")
                                     const itemsapproved = item.isUserApproved === false ? "bg-red-200" : "bg-green-200"
                                     return (
                                         <>
                                             <tr className={`${itemsapproved}`}  >
-                                                <td className="border px-4 py-2">{index+1}</td>
-                                                <td className="border px-4 py-2">Profile Picture</td>
+                                                <td className="border px-4 py-2">{index + 1}</td>
+                                                <td className="border px-4 py-2">
+                                                    {profilePicture && (
+                                                        <img className='rounded-full h-20 w-20' src={`http://localhost:8000/${profilePicture.replace(/\\/g, "/")}`}  alt="Profile" />
+                                                    )}
+                                                </td>
                                                 <td className="border px-4 py-2">{item.name}</td>
                                                 <td className="border px-4 py-2">{item.email}</td>
                                                 <td className="border px-4 py-2">{item.role === 1 ? "Admin" : "User"}</td>
@@ -100,7 +106,7 @@ const Getusers = () => {
                                                     <select
                                                         className="form-select appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                                         value={item.isUserApproved}
-                                                        onChange={(e) => handleApprovalChange(item._id , e.target.value)}
+                                                        onChange={(e) => handleApprovalChange(item._id, e.target.value)}
                                                     >
                                                         <option value="true">Approved</option>
                                                         <option value="false">Not Approved</option>

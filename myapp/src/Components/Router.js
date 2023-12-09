@@ -15,6 +15,7 @@ import Editcase from '../Screens/Editpages/Editcase'
 import Editrequest from '../Screens/Editpages/Editrequest'
 import Usersview from '../Screens/Userscreens/Usersview'
 import Getusers from '../Screens/Users/Getusers'
+import Adduser from '../Screens/Users/Adduser'
 
 
 
@@ -39,6 +40,7 @@ const Router = () => {
        <Route path='/editreq' element={<Editrequest/>}/>
        <Route path='/user' element={<Usersview/>}/>
        <Route path='/getallusers' element={<Getusers/>}/>
+       <Route path='/addusers' element={<Adduser/>}/>
       
       
 
