@@ -87,8 +87,8 @@ const Getusers = () => {
                             </thead>
                             <tbody>
                                 {getuserdata.map((item, index) => {
-                                    const {profilePicture} = item;
-                                    console.log(profilePicture , "profilepicture")
+                                    const { profilePicture } = item;
+                                    console.log(profilePicture, "profilepicture")
                                     const itemsapproved = item.isUserApproved === false ? "bg-red-200" : "bg-green-200"
                                     return (
                                         <>
@@ -96,7 +96,7 @@ const Getusers = () => {
                                                 <td className="border px-4 py-2">{index + 1}</td>
                                                 <td className="border px-4 py-2">
                                                     {profilePicture && (
-                                                        <img className='rounded-full h-20 w-20' src={`http://localhost:8000/${profilePicture.replace(/\\/g, "/")}`}  alt="Profile" />
+                                                        <img className='rounded-full h-20 w-20' src={`${urlapi}/${profilePicture.replace(/\\/g, "/")}`} alt="Profile" />
                                                     )}
                                                 </td>
                                                 <td className="border px-4 py-2">{item.name}</td>
