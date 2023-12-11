@@ -15,7 +15,7 @@ const UserRegistration = async (req, res) => {
         return res.send({ message: "User Already Exist" })
     }
     const hashed = await bcrypt.hash(password, 10)
-    const newuser = new Userschema({ name, isUserApproved, email, password: hashed, role })
+    const newuser = new Userschema({ name, isUserApproved, email, password: hashed, role  , profilePicture: req.file ? req.file.path : ''})
 
     const result = newuser.save()
     if (result) {

@@ -4,15 +4,26 @@ const { UserRegistration, logincontroller } = require('../Controllers/Authcontro
 const auth = require('../Middlewares/Verification')
 const { Editrequestget } = require('../Controllers/AdminController')
 const { Getallusers } = require('../Controllers/Usercontroller')
+const multer = require('multer')
 
 
+const storage = multer.diskStorage({
+    destination: "uploads/",
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+
+})
+
+const upload = multer({ storage: storage })
+const upload1 = multer({ dest: 'uploads/' });
 
 
 // ok
 const router = express.Router()
 
 // Auth controllers
-router.post('/registration', UserRegistration)
+router.post('/registration', upload.single('profilePicture') ,  UserRegistration)
 router.post('/login', logincontroller)
 
 // Case Routes
