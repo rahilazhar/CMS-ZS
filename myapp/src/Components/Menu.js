@@ -35,6 +35,11 @@ export const Menue = (userrole) => {
       link: '/getallusers',
 
     },
+    {
+      title: "Add Users",
+      link: '/addusers',
+
+    },
 
 
     // { title: "Media", link: "/media", spacing: true },
@@ -49,6 +54,5 @@ export const Menue = (userrole) => {
 
 
 export const urlapi = "https://api.zianshahlegalconsultant.com"
-// export const urlapi = "http://localhost:8000
+// export const urlapi = "http://localhost:8000"
 // http://10.0.2.2:8082/api/v1/auth/entries
-

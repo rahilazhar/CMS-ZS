@@ -80,7 +80,7 @@ const Getusers = () => {
                                     <th className="px-4 py-2">Profile</th>
                                     <th className="px-4 py-2">Name</th>
                                     <th className="px-4 py-2">Email</th>
-                                    <th className="px-4 py-2">Approved User</th>
+                                    <th className="px-4 py-2">Role</th>
                                     <th className="px-4 py-2">Current Status</th>
                                     <th className="px-4 py-2">Action</th>
                                 </tr>
@@ -101,7 +101,7 @@ const Getusers = () => {
                                                 </td>
                                                 <td className="border px-4 py-2">{item.name}</td>
                                                 <td className="border px-4 py-2">{item.email}</td>
-                                                <td className="border px-4 py-2">{item.role === 1 ? "Admin" : "User"}</td>
+                                                <td className="border px-4 py-2">{item.role}</td>
                                                 <td className="border px-4 py-2">
                                                     <select
                                                         className="form-select appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
