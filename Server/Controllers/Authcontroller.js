@@ -4,7 +4,7 @@ const JWT = require('jsonwebtoken')
 
 
 const UserRegistration = async (req, res) => {
-    const { name, email, password, role , isUserApproved } = req.body
+    const { name, email, password, role, isUserApproved } = req.body
 
     if (!name || !email || !password) {
         return res.send({ message: "please fill all the fields" })
@@ -15,7 +15,7 @@ const UserRegistration = async (req, res) => {
         return res.send({ message: "User Already Exist" })
     }
     const hashed = await bcrypt.hash(password, 10)
-    const newuser = new Userschema({ name, isUserApproved, email, password: hashed, role  , profilePicture: req.file ? req.file.path : ''})
+    const newuser = new Userschema({ name, isUserApproved, email, password: hashed, role, profilePicture: req.file ? req.file.path : '' })
 
     const result = newuser.save()
     if (result) {
@@ -61,7 +61,7 @@ const logincontroller = async (req, res) => {
         const token = JWT.sign({ id: user._id }, process.env.JWT_Key, { expiresIn: '7d' });
         // Replace 'your_jwt_secret' with a real secret key
 
-        res.status(200).json({ token ,  role:user.role , email:user.email });
+        res.status(200).json({ token, role: user.role, email: user.email });
     } catch (error) {
         res.status(500).send('Server error');
     }

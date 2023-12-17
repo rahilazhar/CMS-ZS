@@ -11,33 +11,100 @@ const Userschema = require('../Models/Userschema')
 const Caseentries = async (req, res) => {
     try {
         const {
-            Suitno,
-            title,
-            nature,
-            prevhearing,
-            nexthearing,
-            factsheet,
-            progressreport,
+            NatureofSuit,
+            PlaintiffsBackground,
+            PlaintiffsClaim,
+            DefendantsArgument,
+            CurrentStatus,
+            PlaintiffsRepresentation,
+            Defendantrepresentative,
+            RestrainingOrder,
+            PlaintiffsSubmittedDocuments,
+            AdditionalPlaintiffDocuments,
+            DefendantsSubmittedDocuments,
+            AdditionalDefendantDocuments,
+            NoofWitnessesofPlaintiff,
+            NoofWitnessesofDefendant,
+            application,
+            filingOfSuit,
+            numberOfDefendants,
+            poaFilingDatePlaintiff,
+            poaFilingDateDefendant,
+            defendantsWrittenStatementDate,
+            issuesFramedDate,
+            restrainingOrderDate,
+            lastDateOfHearing,
+            nextDateOfHearing,
+            lawyer,
+            court,
+            title
         } = req.body
 
-        if (!Suitno || !title || !nature || !prevhearing || !nexthearing || !factsheet || !progressreport) {
+        if (
+            !NatureofSuit ||
+            !PlaintiffsBackground ||
+            !PlaintiffsClaim ||
+            !DefendantsArgument ||
+            !CurrentStatus ||
+            !PlaintiffsRepresentation ||
+            !Defendantrepresentative ||
+            !RestrainingOrder ||
+            !PlaintiffsSubmittedDocuments ||
+            !AdditionalPlaintiffDocuments ||
+            !DefendantsSubmittedDocuments ||
+            !AdditionalDefendantDocuments ||
+            !NoofWitnessesofPlaintiff ||
+            !NoofWitnessesofDefendant ||
+            !filingOfSuit ||
+            !numberOfDefendants ||
+            !poaFilingDatePlaintiff ||
+            !poaFilingDateDefendant ||
+            !defendantsWrittenStatementDate ||
+            !issuesFramedDate ||
+            !restrainingOrderDate ||
+            !lastDateOfHearing ||
+            !nextDateOfHearing ||
+            !lawyer ||
+            !court ||
+            !title
+        ) {
             return res.status(400).send({ Message: "Fill All the Fields" });
         }
 
-        const checksuitno = await Caseentryschema.findOne({ Suitno });
+        // const checksuitno = await Caseentryschema.findOne({ Suitno });
 
-        if (checksuitno) {
-            return res.status(409).send({ Message: "Case Already Exists" });
-        }
+        // if (checksuitno) {
+        //     return res.status(409).send({ Message: "Case Already Exists" });
+        // }
 
         const newCaseEntry = new Caseentryschema({
-            Suitno,
-            title,
-            nature,
-            prevhearing,
-            nexthearing,
-            factsheet,
-            progressreport,
+            NatureofSuit,
+            PlaintiffsBackground,
+            PlaintiffsClaim,
+            DefendantsArgument,
+            CurrentStatus,
+            PlaintiffsRepresentation,
+            Defendantrepresentative,
+            RestrainingOrder,
+            PlaintiffsSubmittedDocuments,
+            AdditionalPlaintiffDocuments,
+            DefendantsSubmittedDocuments,
+            AdditionalDefendantDocuments,
+            NoofWitnessesofPlaintiff,
+            NoofWitnessesofDefendant,
+            application,
+            filingOfSuit,
+            numberOfDefendants,
+            poaFilingDatePlaintiff,
+            poaFilingDateDefendant,
+            defendantsWrittenStatementDate,
+            issuesFramedDate,
+            restrainingOrderDate,
+            lastDateOfHearing,
+            nextDateOfHearing,
+            lawyer,
+            court,
+            title
         });
 
         const savedCaseEntry = await newCaseEntry.save()
