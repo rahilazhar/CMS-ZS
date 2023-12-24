@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+
 const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
@@ -14,7 +15,31 @@ const auth = async (req, res, next) => {
 };
 
 
-module.exports = auth
+const verifyToken = (req, res, next) => {
+    // Extract the token from the 'Authorization' header
+    const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+    if (!authHeader) {
+        return res.status(403).send({ message: 'No authorization header.' });
+    }
+
+    const token = authHeader.split(' ')[1]; // Split 'Bearer <token>'
+    if (!token) {
+        return res.status(403).send({ message: 'No token provided.' });
+    }
+
+    jwt.verify(token, process.env.JWT_Key, (err, decoded) => {
+        if (err) {
+            return res.status(500).send({ message: 'Failed to authenticate token.' });
+        }
+        req.userId = decoded.id;
+        req.userRole = decoded.role; // Assuming the token includes the user's role
+        next();
+    });
+};
+
+
+
+module.exports = {auth , verifyToken}
 
 
 

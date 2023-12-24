@@ -1,6 +1,7 @@
 const Userschema = require("../Models/Userschema")
 const bcrypt = require('bcrypt')
 const JWT = require('jsonwebtoken')
+const Caseentriesschema = require('../Models/Caseentryschema')
 
 
 const UserRegistration = async (req, res) => {
@@ -22,6 +23,39 @@ const UserRegistration = async (req, res) => {
         return res.send({ message: "USER REGISTERED SUCCESSFULLY", role, email })
     } else {
         return res.send({ ERROR: "Failed" })
+    }
+}
+
+
+// const GetRoleUsers = async(req, res) => {
+//     try {
+//         let query = {};
+
+//         if (req.userRole === 'BOP') {
+//             query.Clientname = 'BOP';
+//         }
+
+//         console.log('User Role:', req.userRole);
+
+
+//         const cases = await Caseentriesschema.find(query);
+//         res.status(200).send(cases);
+        
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send({ message: 'Internal Server Error' });
+//     }
+// }
+const GetRoleUsers = async (req, res) => {
+    try {
+        // Use the user's role to filter cases
+        const query = { Clientname: req.userRole };
+
+        const cases = await Caseentriesschema.find(query);
+        res.status(200).send(cases);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Internal Server Error' });
     }
 }
 
@@ -58,10 +92,10 @@ const logincontroller = async (req, res) => {
             return res.status(400).send('Invalid credentials');
         }
 
-        const token = JWT.sign({ id: user._id }, process.env.JWT_Key, { expiresIn: '7d' });
+        const token = JWT.sign({ id: user._id , role: user.role }, process.env.JWT_Key, { expiresIn: '7d' });
         // Replace 'your_jwt_secret' with a real secret key
 
-        res.status(200).json({ token, role: user.role, email: user.email });
+        res.status(200).json({ token, role: user.role, email: user.email  , picture: user.profilePicture});
     } catch (error) {
         res.status(500).send('Server error');
     }
@@ -71,4 +105,4 @@ const logincontroller = async (req, res) => {
 
 
 
-module.exports = { UserRegistration, logincontroller }
+module.exports = { UserRegistration, logincontroller, GetRoleUsers }

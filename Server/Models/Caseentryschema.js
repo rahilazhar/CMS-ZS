@@ -3,70 +3,70 @@ const mongoose = require("mongoose");
 const Caseentries = new mongoose.Schema(
   {
     NatureofSuit: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     PlaintiffsBackground: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     PlaintiffsClaim: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     DefendantsArgument: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     CurrentStatus: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     PlaintiffsRepresentation: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     Defendantrepresentative: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     RestrainingOrder: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     PlaintiffsSubmittedDocuments: {
-        type: [String], 
-        required: true
+      type: [String],
+      required: true
     },
     AdditionalPlaintiffDocuments: {
-        type:[String], 
-        required: true
+      type: [String],
+      required: true
     },
     DefendantsSubmittedDocuments: {
-        type:[String],
-        required: true
+      type: [String],
+      required: true
     },
     AdditionalDefendantDocuments: {
-        type:[String],
-        required: true
+      type: [String],
+      required: true
     },
     NoofWitnessesofPlaintiff: {
-        type:String,
-        required: true
+      type: String,
+      required: true
     },
     NoofWitnessesofDefendant: {
-        type:String,
-        required: true
+      type: String,
+      required: true
     },
 
-    application:[
+    application: [
       {
         srNo: String,
         application: String,
         applicationDate: String,
         reply: String,
         replyDate: String,
-    }
+      }
     ],
 
     filingOfSuit: {
@@ -97,17 +97,21 @@ const Caseentries = new mongoose.Schema(
       type: String,
       required: true
     },
-    lastDateOfHearing: {
+    prevhearing: {
       type: String,
       required: true
     },
-    nextDateOfHearing: {
+    nexthearing: {
       type: String,
       required: true
     },
     lawyer: {
       type: String,
       required: true
+    },
+    Clientname: {
+      type: String,
+      // required: true
     },
     court: {
       type: String,

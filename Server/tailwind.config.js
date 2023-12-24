@@ -7,14 +7,19 @@ module.exports = {
   ],
   theme: {
     extend: {
-      animation : {
+      animation: {
         'blink': 'blink 1s linear infinite',
         'color-change': 'color-change 3s linear infinite',
       },
-      colors:{
-        'light-white' : ' rgba(255,255,255,0.18)'
-      }
+      colors: {
+        'light-white': ' rgba(255,255,255,0.18)'
+      },
+      backdropFilter: {
+        'none': 'none',
+        'blur': 'blur(20px)',
+      },
     },
+    
   },
   darkMode: "class",
   plugins: [require("tw-elements/dist/plugin.cjs")]

@@ -33,11 +33,12 @@ const Caseentries = async (req, res) => {
             defendantsWrittenStatementDate,
             issuesFramedDate,
             restrainingOrderDate,
-            lastDateOfHearing,
-            nextDateOfHearing,
+            prevhearing,
+            nexthearing,
             lawyer,
             court,
-            title
+            title,
+            Clientname
         } = req.body
 
         if (
@@ -62,11 +63,12 @@ const Caseentries = async (req, res) => {
             !defendantsWrittenStatementDate ||
             !issuesFramedDate ||
             !restrainingOrderDate ||
-            !lastDateOfHearing ||
-            !nextDateOfHearing ||
+            !prevhearing ||
+            !nexthearing ||
             !lawyer ||
             !court ||
-            !title
+            !title ||
+            !Clientname
         ) {
             return res.status(400).send({ Message: "Fill All the Fields" });
         }
@@ -100,11 +102,12 @@ const Caseentries = async (req, res) => {
             defendantsWrittenStatementDate,
             issuesFramedDate,
             restrainingOrderDate,
-            lastDateOfHearing,
-            nextDateOfHearing,
+            prevhearing,
+            nexthearing,
             lawyer,
             court,
-            title
+            title,
+            Clientname
         });
 
         const savedCaseEntry = await newCaseEntry.save()

@@ -1,7 +1,7 @@
 const express = require('express')
 const { Caseentries, Getentries, gettodayhearings, updateschema, deleteHistoryEntry, Gethistory, GetTodayEntries, Factsheetcontroller, getFactsheetByCaseentryId, Getentriesonthebaseofid, updateFactsheetByCaseentryId, deleteCaseEntry, getCaseBySuitno, Editallentries, RequestEdit, Approvedrequest, ListPendingEditRequests, UpdateRequestStatus } = require('../Controllers/Entriescontroller')
-const { UserRegistration, logincontroller } = require('../Controllers/Authcontroller')
-const auth = require('../Middlewares/Verification')
+const { UserRegistration, logincontroller, GetRoleUsers } = require('../Controllers/Authcontroller')
+const {auth , verifyToken} = require('../Middlewares/Verification')
 const { Editrequestget } = require('../Controllers/AdminController')
 const { Getallusers } = require('../Controllers/Usercontroller')
 const multer = require('multer')
@@ -16,7 +16,6 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage })
-
 
 
 // ok
@@ -59,6 +58,9 @@ router.get('/gettodayhearings', gettodayhearings)
 // Users Routes
 
 router.get('/getallusers', Getallusers)
+
+
+router.get('/getusersonrole' , verifyToken ,GetRoleUsers)
 
 
 module.exports = router
