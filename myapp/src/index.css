@@ -15,4 +15,13 @@
     75% { background-color: #ff00ff; }
     100% { background-color: #00ffff; }
   }
+
+
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
   

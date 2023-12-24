@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useContext } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { BsFillFileEarmarkSpreadsheetFill } from 'react-icons/bs'
@@ -7,42 +7,44 @@ import { urlapi } from '../../Components/Menu';
 import { MdDeleteForever } from 'react-icons/md'
 import BasicModal from '../../Components/ViewcaseModal';
 import { FaRegEdit } from "react-icons/fa";
+import { CaseHistoryContext } from '../../Context/CaseHistoryContext';
 
 const Viewcases = () => {
     const [entries, setEntries] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredHistory, setFilteredHistory] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [entriesPerPage] = useState(10); // Set the number of entries you want per page
     const [selectednature, setSelectedNature] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+    const { caseget } = useContext(CaseHistoryContext);
 
     useEffect(() => {
         // Filter logic remains the same
         const lowercasedQuery = searchQuery.toLowerCase();
-        const filtered = !searchQuery ? entries : entries.filter(entry =>
+        const filtered = !searchQuery ? caseget : caseget.filter(entry =>
             entry.title.toLowerCase().includes(lowercasedQuery) ||
             entry.nature.toLowerCase().includes(lowercasedQuery)
         );
         setFilteredHistory(filtered);
         setCurrentPage(1); // Reset to the first page when search query changes
-    }, [searchQuery, entries]);
+    }, [searchQuery, caseget]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${urlapi}/api/v1/auth/getentries`);
-                setEntries(response.data);
-            } catch (error) {
-                console.error('Error fetching data: ', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await axios.get(`${urlapi}/api/v1/auth/getentries`);
+    //             setEntries(response.data);
+    //         } catch (error) {
+    //             console.error('Error fetching data: ', error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-        fetchData();
-    }, []);
+    //     fetchData();
+    // }, []);
 
     const indexOfLastEntry = currentPage * entriesPerPage;
     const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
@@ -99,7 +101,8 @@ const Viewcases = () => {
 
 
 
-
+    
+    console.log(caseget , 'caseGet')
 
     return (
         <div className='w-full mx-auto px-4 sm:px-6 lg:px-8 bg-gray-100'>

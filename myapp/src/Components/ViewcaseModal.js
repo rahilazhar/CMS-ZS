@@ -17,7 +17,8 @@ const style = {
 };
 
 export default function BasicModal({open , handleOpen , handleClose , Naturedata}) {
-
+   
+  console.log(Naturedata , "naturedat_____")
 
   return (
     <div>
@@ -34,6 +35,7 @@ export default function BasicModal({open , handleOpen , handleClose , Naturedata
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
            {Naturedata}
+
           </Typography>
         </Box>
       </Modal>

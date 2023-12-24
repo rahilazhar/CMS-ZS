@@ -1,6 +1,10 @@
+import { useAuth } from '../Context/AuthContext';
+
+
 export const Menue = (userrole) => {
 
   console.log(userrole, 'userrole')
+
 
   return [
     // { title: "Dashboard", link: "/#" },
@@ -16,6 +20,7 @@ export const Menue = (userrole) => {
     {
       title: "Add Case",
       link: "/addcase",
+      hidden: userrole !== "1",
 
       // submenue: true,
       // submenueitems: [
@@ -28,18 +33,33 @@ export const Menue = (userrole) => {
     {
       title: "View Cases",
       link: '/viewcases',
+      hidden: userrole !== "1",
 
     },
     {
       title: "Users",
       link: '/getallusers',
+      hidden: userrole !== "1",
 
     },
     {
       title: "Add Users",
       link: '/addusers',
+      hidden: userrole !== "1",
 
     },
+    {
+      title: "View Cases",
+      link: '/role',
+      hidden: userrole == "1",
+
+    },
+
+    // {
+    //   titlebutton: "Logout",
+    //   link: "#",
+    // },
+
 
 
     // { title: "Media", link: "/media", spacing: true },
@@ -53,6 +73,6 @@ export const Menue = (userrole) => {
 }
 
 
-export const urlapi = "https://api.zianshahlegalconsultant.com"
-// export const urlapi = "http://localhost:8000"
+// export const urlapi = "https://api.zianshahlegalconsultant.com"
+export const urlapi = "http://localhost:8000"
 // http://10.0.2.2:8082/api/v1/auth/entries

@@ -13,6 +13,16 @@ export const CaseHistoryProvider = ({ children }) => {
     const [updatemessage, setUpdatemessage] = useState('');
     const [loading, setLoading] = useState(false); // New loading state
     const [editget, setEditget] = useState([]); // New loading state
+    const [caseget, setCaseget] = useState([]);
+    const [casesrole, setCasesrole] = useState([])
+    const [entriesall, setEntriesall] = useState([]);
+    const [todayCases, setTodayCases] = useState([]);
+    const [error, setError] = useState(null);
+
+
+    const usert = sessionStorage.getItem('user'); // Retrieve the token
+    const token = usert ? JSON.parse(usert).token : null
+
 
     // Fetch case history function
     const fetchHistory = async (caseId) => {
@@ -47,7 +57,7 @@ export const CaseHistoryProvider = ({ children }) => {
             const url = `${urlapi}/api/v1/auth/factsheet/caseentry/${caseId}`;
             const response = await axios.get(url);
             setFactview(response.data);
-            
+
         } catch (error) {
             console.error(error);
             setMessage('Failed to fetch case history');
@@ -82,7 +92,7 @@ export const CaseHistoryProvider = ({ children }) => {
     //         if (response.data && response.data.newEntry) {
     //             setUpdatemessage(response.data.message);
     //             setHistory(prevHistory => [...prevHistory, response.data.newEntry]);
-    
+
     //             // Update filteredHistory to include the new entry
     //             setHistory(prevFilteredHistory => [...prevFilteredHistory, response.data.newEntry]);
     //         } else {
@@ -104,21 +114,100 @@ export const CaseHistoryProvider = ({ children }) => {
             const url = `${urlapi}/api/v1/auth/editreqget`;
             const response = await axios.get(url);
             setEditget(response.data);
-            
+
         } catch (error) {
             console.error(error);
         } finally {
             setLoading(false); // Stop loading
         }
     };
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${urlapi}/api/v1/auth/getentries`);
+                setCaseget(response.data);
+            } catch (error) {
+                console.error('Error fetching data: ', error);
+            } finally {
+                // setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchProtectedData = async () => {
+
+
+            try {
+                const response = await fetch(`${urlapi}/api/v1/auth/getusersonrole`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Request failed');
+                }
+
+                const data = await response.json();
+                setCasesrole(data)
+            } catch (error) {
+                console.error('Error fetching protected data:', error);
+            }
+        };
+        fetchProtectedData()
+    }, [casesrole, token])
+
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${urlapi}/api/v1/auth/getentries`);
+                setEntriesall(response.data);
+                setLoading(false);
+            } catch (error) {
+                setError(error);
+            }
+        };
+        Editrequestget()
+        fetchData();
+
+    }, []);
+
+
+    useEffect(() => {
+        const fetchTodayCases = async () => {
+          try {
+            const response = await axios.get(`${urlapi}/api/v1/auth/gettodayentries`);
+            setTodayCases(response.data);
+          } catch (error) {
+            console.error('Error fetching today cases: ', error);
+          } finally {
+            setLoading(false);
+          }
+        };
     
-    
+        fetchTodayCases();
+      }, []);
+
+
+
+
+
+
 
 
 
 
     return (
-        <CaseHistoryContext.Provider value={{ history, message, entry, updatemessage ,editget , factview, loading, fetchfactsheet, fetchHistoryentry, fetchHistory, updateHistory , Editrequestget }}>
+        <CaseHistoryContext.Provider value={{ history,todayCases , error, entriesall, casesrole, message, entry, updatemessage, editget, factview, loading, fetchfactsheet, fetchHistoryentry, fetchHistory, updateHistory, Editrequestget, caseget }}>
             {children}
         </CaseHistoryContext.Provider>
     );

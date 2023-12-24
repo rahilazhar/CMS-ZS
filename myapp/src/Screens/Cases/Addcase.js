@@ -108,8 +108,8 @@ const Addcase = () => {
     const [defendantsWrittenStatementDate, setDefendantsWrittenStatementDate] = useState('');
     const [issuesFramedDate, setIssuesFramedDate] = useState('');
     const [restrainingOrderDate, setRestrainingOrderDate] = useState('');
-    const [lastDateOfHearing, setLastDateOfHearing] = useState('');
-    const [nextDateOfHearing, setNextDateOfHearing] = useState('');
+    const [prevhearing, setPrevHearing] = useState('');
+    const [nexthearing, setNextHearing] = useState('');
     const [lawyer, setLawyer] = useState('');
     const [court, setCourt] = useState('');
     const [title, setTitle] = useState('');
@@ -124,6 +124,7 @@ const Addcase = () => {
     const [showApplications, setShowApplications] = useState(false);
     const [showDates, setShowDates] = useState(false);
     const [addcase, setAddcase] = useState(false)
+    const [clientname, setClientname] = useState('')
 
 
     const [editIndex, setEditIndex] = useState(-1);
@@ -238,11 +239,12 @@ const Addcase = () => {
             defendantsWrittenStatementDate: defendantsWrittenStatementDate,
             issuesFramedDate: issuesFramedDate,
             restrainingOrderDate: restrainingOrderDate,
-            lastDateOfHearing: lastDateOfHearing,
-            nextDateOfHearing: nextDateOfHearing,
+            prevhearing: prevhearing,
+            nexthearing: nexthearing,
             lawyer: lawyer,
             court: court,
-            title: title
+            title: title,
+            Clientname : clientname
         };
 
         try {
@@ -283,11 +285,12 @@ const Addcase = () => {
                 setDefendantsWrittenStatementDate('');
                 setIssuesFramedDate('');
                 setRestrainingOrderDate('');
-                setLastDateOfHearing('');
-                setNextDateOfHearing('');
+                setPrevHearing('');
+                setNextHearing('');
                 setLawyer('');
                 setCourt('');
                 setTitle('');
+                setClientname('')
 
 
             } else {
@@ -346,7 +349,7 @@ const Addcase = () => {
 
 
                     {/* Add Case Section */}
-                    <div onClick={toggleaddcase} className="section-toggle  shadow-2xl bg-gray-100 flex justify-center p-4 mt-4">
+                    <div onClick={toggleaddcase} className="section-toggle cursor-pointer  shadow-2xl bg-gray-100 flex justify-center p-4 mt-4">
                         Add Case
                         {/* arrow icon */}
                     </div>
@@ -375,8 +378,23 @@ const Addcase = () => {
                                     onChange={(e) => setLawyer(e.target.value)}
                                     value={lawyer}
                                 />
+
+                                <TextField
+                                    className='w-full mb-4'
+                                    label="Client Name"
+                                    variant="outlined"
+                                    onChange={(e) => setClientname(e.target.value)}
+                                    value={clientname}
+                                />
                             </div>
                             <div className='flex  justify-evenly space-x-2 mt-3'>
+                                <TextField
+                                    className='w-full mb-4'
+                                    label="Nature of Suit"
+                                    variant="outlined"
+                                    onChange={(e) => setNatureOfSuit(e.target.value)}
+                                    value={natureOfSuit}
+                                />
                                 <TextField
                                     className='w-full mb-4'
                                     label="Plaintiff's Background"
@@ -385,13 +403,7 @@ const Addcase = () => {
                                     value={plaintiffsBackground}
                                 />
 
-                                <TextField
-                                    className='w-full mb-4'
-                                    label="Nature of Suit"
-                                    variant="outlined"
-                                    onChange={(e) => setNatureOfSuit(e.target.value)}
-                                    value={natureOfSuit}
-                                />
+
                             </div>
 
 
@@ -454,7 +466,7 @@ const Addcase = () => {
 
 
                     {/* Plaintiffs Submitted Documents Section */}
-                    <div onClick={togglePlaintiffsSubmittedDocuments} className="section-toggle shadow-2xl bg-gray-100 flex justify-center p-4 mt-4">
+                    <div onClick={togglePlaintiffsSubmittedDocuments} className="section-toggle cursor-pointer shadow-2xl bg-gray-100 flex justify-center p-4 mt-4">
                         Plaintiffs Submitted Documents
                         {/* <FaArrowDownLong /> */}
                     </div>
@@ -536,7 +548,7 @@ const Addcase = () => {
                     )}
 
                     {/*Defendant's Submitted Documents */}
-                    <div onClick={toggleDefendantsSubmittedDocuments} className="section-toggle   shadow-2xl bg-gray-100 flex justify-center p-4 mt-4">
+                    <div onClick={toggleDefendantsSubmittedDocuments} className="section-toggle cursor-pointer   shadow-2xl bg-gray-100 flex justify-center p-4 mt-4">
                         Defendant's Submitted Documents
                         {/* <FaArrowDownLong /> */}
                     </div>
@@ -622,7 +634,7 @@ const Addcase = () => {
 
 
                     {/* Witness */}
-                    <div onClick={togglewitness} className="section-toggle bg-gray-100 shadow-2xl flex justify-center p-4 mt-4">
+                    <div onClick={togglewitness} className="section-toggle cursor-pointer bg-gray-100 shadow-2xl flex justify-center p-4 mt-4">
                         Witnesses
                         {/* <FaArrowDownLong /> */}
                     </div>
@@ -648,7 +660,7 @@ const Addcase = () => {
                         </>
                     )}
                     {/* Application */}
-                    <div onClick={toggleApplications} className="section-toggle bg-gray-100 shadow-2xl flex justify-center p-4 mt-4">
+                    <div onClick={toggleApplications} className="section-toggle cursor-pointer bg-gray-100 shadow-2xl flex justify-center p-4 mt-4">
                         Application
                         {/* <FaArrowDownLong /> */}
                     </div>
@@ -745,7 +757,7 @@ const Addcase = () => {
                         </>
                     )}
 
-                    <div onClick={toggleDates} className="section-toggle bg-gray-100 shadow-2xl flex justify-center p-4 mt-4">
+                    <div onClick={toggleDates} className="section-toggle cursor-pointer bg-gray-100 shadow-2xl flex justify-center p-4 mt-4">
                         Dates
                         {/* <FaArrowDownLong /> */}
                     </div>
@@ -817,8 +829,8 @@ const Addcase = () => {
                                     className='w-full mb-4'
                                     label="Last Date of Hearing"
                                     variant="outlined"
-                                    onChange={(e) => setLastDateOfHearing(e.target.value)}
-                                    value={lastDateOfHearing}
+                                    onChange={(e) => setPrevHearing(e.target.value)}
+                                    value={prevhearing}
                                 />
                             </div>
 
@@ -827,8 +839,8 @@ const Addcase = () => {
                                     className='w-full mb-4'
                                     label="Next date of Hearing"
                                     variant="outlined"
-                                    onChange={(e) => setNextDateOfHearing(e.target.value)}
-                                    value={nextDateOfHearing}
+                                    onChange={(e) => setNextHearing(e.target.value)}
+                                    value={nexthearing}
                                 />
 
                             </div>

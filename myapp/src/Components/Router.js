@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route , Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Addcase from '../Screens/Cases/Addcase'
 import Home from '../Screens/Home'
 import DataTable from '../Screens/Cases/Viewcases'
@@ -13,9 +13,12 @@ import TodayHearings from '../Screens/Cases/Todayhearing'
 import ViewcaseModal from './ViewcaseModal'
 import Editcase from '../Screens/Editpages/Editcase'
 import Editrequest from '../Screens/Editpages/Editrequest'
-import Usersview from '../Screens/Userscreens/Usersview'
+// import Usersview from '../Screens/Userscreens/Usersview'
 import Getusers from '../Screens/Users/Getusers'
 import Adduser from '../Screens/Users/Adduser'
+import Newcaseget from '../Screens/Cases/Newcaseget'
+import RolebaseCases from '../Screens/Client/RolebaseCases'
+import ProtectedRoute from './ProtectedRoutes'
 
 
 
@@ -23,29 +26,34 @@ import Adduser from '../Screens/Users/Adduser'
 
 const Router = () => {
   return (
-   <>
-   <Routes>
-       <Route path='/' element={<Home/>}/>
-       <Route path='/addcase' element={<Addcase/>}/>
-       <Route path='/viewcases' element={<DataTable/>}/>
-       <Route path='/viewdetails/:caseId/:title' element={<History/>}/>
-       <Route path='/Factsheet/:caseId/:title' element={<Factsheet/>}/>
-       <Route path='/factsheetview/:caseId' element={<Factsheetview/>}/>
-       <Route path='/todaycase' element={<Viewtodaycase/>}/>
-       <Route path='/factsheetedit/:id' element={<Factsheetedit/>}/>
-       <Route path='/todayhearings' element={<TodayHearings/>}/>
-       <Route path='/*' element={<Errorpage/>}/>
-       <Route path='/vmodal' element={<ViewcaseModal/>}/>
-       <Route path='/Editcase/:id' element={<Editcase/>}/>
-       <Route path='/editreq' element={<Editrequest/>}/>
-       <Route path='/user' element={<Usersview/>}/>
-       <Route path='/getallusers' element={<Getusers/>}/>
-       <Route path='/addusers' element={<Adduser/>}/>
-      
-      
+    <>
+      <Routes>
+        <Route path='/' element={<ProtectedRoute component={Home} allowedRoles={["1"]} />} />
+        <Route path='/addcase' element={<ProtectedRoute component={Addcase} allowedRoles={["1"]} />} />
+        {/* <Route path='/viewcases' element={<DataTable />} />/ */}
 
-   </Routes>
-   </>
+        <Route path='/viewcases' element={<ProtectedRoute component={Newcaseget} allowedRoles={["1"]} />} />
+        <Route path='/viewdetails/:caseId/:title' element={<ProtectedRoute component={History} allowedRoles={["1"]} />} />
+        <Route path='/Factsheet/:caseId/:title' element={<ProtectedRoute component={Factsheet} allowedRoles={["1"]} />} />
+        <Route path='/factsheetview/:caseId' element={<ProtectedRoute component={Factsheetview} allowedRoles={["1"]} />} />
+        <Route path='/todaycase' element={<ProtectedRoute component={Viewtodaycase} allowedRoles={["1"]} />} />
+        <Route path='/factsheetedit/:id' element={<ProtectedRoute component={Factsheetedit} allowedRoles={["1"]} />} />
+        <Route path='/todayhearings' element={<ProtectedRoute component={TodayHearings} allowedRoles={["1"]} />} />
+        <Route path='/*' element={<Errorpage />} />
+        <Route path='/vmodal' element={<ProtectedRoute component={ViewcaseModal} allowedRoles={["1"]} />} />
+        <Route path='/Editcase/:id' element={<ProtectedRoute component={Editcase} allowedRoles={["1"]} />} />
+        <Route path='/editreq' element={<ProtectedRoute component={Editrequest} allowedRoles={["1"]} />} />
+        {/* <Route path='/user' element={<ProtectedRoute component={Usersview} allowedRoles={["1"]} />} /> */}
+        <Route path='/allusers' element={<ProtectedRoute component={Getusers} allowedRoles={["1"]} />} />
+        <Route path='/addusers' element={<ProtectedRoute component={Adduser} allowedRoles={["1"]} />} />
+        <Route path='/role' element={<RolebaseCases/>}  />
+
+
+
+
+
+      </Routes>
+    </>
   )
 }
 

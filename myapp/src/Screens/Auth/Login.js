@@ -21,15 +21,15 @@ function LoginPage() {
 
     try {
       // Replace with your actual login API endpoint
-      const response = await axios.post(`https://api.zianshahlegalconsultant.com/api/v1/auth/login`, { email, password });
-      const { token, id, role, name } = response.data;
+      const response = await axios.post(`${urlapi}/api/v1/auth/login`, { email, password });
+      const { token, id, role, name, picture } = response.data;
 
       // Use the login function from AuthContext to set the user as logged in
-      login({ email, role, id, name, token }); // Pass the response data to the login context method
-      if (role === 0) {
-        navigate('/user')
-      } else if (role === 1) {
+      login({ email, role, id, name, token, picture }); // Pass the response data to the login context method
+      if (role === "1") {
         navigate('/')
+      } else if (role !== 0) {
+        navigate('/role')
       } else {
         navigate('/*') // Redirect to a login page or other appropriate route
       }
@@ -52,7 +52,7 @@ function LoginPage() {
     <div
       className="w-full h-screen bg-cover bg-center"
       style={{
-        backgroundImage: "url('https://as1.ftcdn.net/v2/jpg/01/22/71/96/1000_F_122719641_V0yw2cAOrfxsON3HeWi2Sf4iVxhv27QO.jpg')",
+        backgroundImage: "url('https://images7.alphacoders.com/347/347075.jpg')",
       }}
     >
 
