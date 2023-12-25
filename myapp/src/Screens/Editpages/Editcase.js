@@ -15,7 +15,7 @@ const Editcase = () => {
     const { id } = useParams()
     const [caseedit, setCaseedit] = useState([])
     const [title, setTitle] = useState('')
-    const [Suitno, setSuitNo] = useState('');
+    const [suitno, setSuitNo] = useState('');
     const [nature, setNature] = useState('');
     const [prevhearing, setPrevHearing] = useState('');
     const [nexthearing, setNextHearing] = useState('');
@@ -54,6 +54,8 @@ const Editcase = () => {
     const [defendantsWrittenStatementDate, setDefendantsWrittenStatementDate] = useState('');
     const [issuesFramedDate, setIssuesFramedDate] = useState('');
     const [restrainingOrderDate, setRestrainingOrderDate] = useState('');
+    const [valueofsuit, setValueofsuit] = useState('')
+   
 
 
     // plantiffs
@@ -258,7 +260,7 @@ const Editcase = () => {
 
         const updateddata = {
             title: title,
-            Suitno: Suitno,
+            Suitno: suitno,
             court: courtname,
             lawyer: lawyer,
             PlaintiffsBackground: plaintiffsBackground,
@@ -284,6 +286,8 @@ const Editcase = () => {
             restrainingOrderDate: restrainingOrderDate,
             nexthearing: nexthearing,
             prevhearing: prevhearing,
+            NatureofSuit : nature
+
 
 
 
@@ -334,9 +338,8 @@ const Editcase = () => {
 
                 // Assuming 'setCaseedit' and 'setTitle' are state setters
                 setCaseedit(data);
-                if (Array.isArray(data) && data.length > 0) {
-                    // setTitle(data[0].title);
-                } else if (data.title) {
+               
+                 if (data) {
                     // This assumes that if a single object is returned, it has a 'title' property
                     setTitle(data.title);
                     setSuitNo(data.Suitno)
@@ -344,7 +347,7 @@ const Editcase = () => {
                     setLawyer(data.lawyer)
                     setNextHearing(data.nexthearing)
                     setPrevHearing(data.prevhearing)
-                    setNature(data.nature)
+                    setNature(data.nature ?? data.NatureofSuit)
                     setFactSheet(data.factsheet ? data.factsheet : "No Data")
                     setProgressReport(data.progressreport)
                     setPlaintiffsBackground(data.PlaintiffsBackground)
@@ -440,7 +443,7 @@ const Editcase = () => {
     }, [responseMessage]); // Dependency array, this effect runs every time responseMessage changes
 
 
-
+        console.log(caseedit.Suitno , 'casedir')
 
     return (
         <>
@@ -458,7 +461,7 @@ const Editcase = () => {
 
 
                         <TextField className='w-full' id="standard-basic" label="Suit No"
-                            onChange={(e) => setSuitNo(e.target.value)} value={Suitno} />
+                            onChange={(e) => setSuitNo(e.target.value)} value={suitno} />
                     </div>
 
 

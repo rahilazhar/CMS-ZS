@@ -16,6 +16,8 @@ import { BsFillFileEarmarkSpreadsheetFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom';
 import { AiFillEye } from 'react-icons/ai'
 import { FaRegEdit } from "react-icons/fa";
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+
 
 const style = {
     position: 'absolute',
@@ -58,6 +60,43 @@ const Newcaseget = () => {
     // const [modalOpen, setModalOpen] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState('');
+
+    const [selectedCourt, setSelectedCourt] = useState('');
+
+    const courtNames = [
+        "Supreme Court of Pakistan",
+        "High Court, Lahore",
+        "High Court, Multan",
+        "High Court, Rawalpindi",
+        "High Court, Islamabad",
+        "District Court",
+        "Special Judicial Magistrate",
+        "Special Judicial Magistrate-30",
+        "Senior Civil Court",
+        "Civil Court",
+        "Family Court",
+        "Guardian Court",
+        "Banking Court-I",
+        "Banking Court-II",
+        "Banking Court-III",
+        "Banking Court-IV",
+        "Banking Court-V",
+        "CNSA Court",
+        "Anti Corruption Court",
+        "ATA-I Court",
+        "ATA-II Court",
+        "ATA-III Court",
+        "Special Tribunal",
+        "Rent Tribunal",
+        "PST Lahore",
+        "FST Lahore",
+        "Revenue Court",
+        "Commissioner",
+        "Special Rent Tribunal",
+        "Environment Tribunal",
+        "Others"
+    ];
+
 
     const { entriesAll, loading, error } = useSelector(state => state);
 
@@ -133,10 +172,29 @@ const Newcaseget = () => {
         return <div>Error: {error.message}</div>;
     }
 
-    const filteredItems = searchTerm
-        ? entriesAll.filter(entry =>
-            entry.title.toLowerCase().includes(searchTerm.toLowerCase()))
-        : entriesAll;
+    // const filteredItems = searchTerm
+    //     ? entriesAll.filter(entry =>
+    //         entry.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    //     : entriesAll;
+
+    // const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+    // const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+
+
+    const filteredItems = entriesAll
+        .filter(entry => {
+            // Filter by search term if it exists
+            const matchesSearchTerm = searchTerm
+                ? entry.title.toLowerCase().includes(searchTerm.toLowerCase())
+                : true;
+
+            // Filter by selected court if it's selected
+            const matchesSelectedCourt = selectedCourt
+                ? entry.court === selectedCourt // Replace 'courtName' with the actual property name
+                : true;
+
+            return matchesSearchTerm && matchesSelectedCourt;
+        });
 
     const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
     const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -261,6 +319,24 @@ const Newcaseget = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full border border-gray-300"
                     />
+                </div>
+
+                <div className="court-dropdown p-4">
+                    <FormControl fullWidth>
+                        <InputLabel id="court-select-label">Select Court</InputLabel>
+                        <Select
+                            labelId="court-select-label"
+                            id="court-select"
+                            value={selectedCourt}
+                            label="Select Court"
+                            onChange={(e) => setSelectedCourt(e.target.value)}
+                        >
+                            <MenuItem value="">All Courts</MenuItem>
+                            {courtNames.map((courtName, index) => (
+                                <MenuItem key={index} value={courtName}>{courtName}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </div>
                 <div className=' bg-gray-200 shadow-xl p-4 font-semibold text-2xl'>All Cases</div>
 

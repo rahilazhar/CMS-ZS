@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { urlapi } from '../../Components/Menu'; // Ensure this is the correct import for your setup
 import { FaArrowDownLong } from "react-icons/fa6";
-import { Button } from '@mui/material';
+import { Button ,InputLabel, Select, MenuItem } from '@mui/material';
+import toast, { Toaster } from 'react-hot-toast';
 const Addcase = () => {
     // State variables for all schema fields
     const [natureOfSuit, setNatureOfSuit] = useState('');
@@ -23,6 +24,41 @@ const Addcase = () => {
     const [defendantSubmittedDocumentmessage, setDefendantSubmittedDocumentmessage] = useState('');
     const [noOfWitnessesOfPlaintiff, setNoOfWitnessesOfPlaintiff] = useState('');
     const [noOfWitnessesOfDefendant, setNoOfWitnessesOfDefendant] = useState('');
+
+    const courtNames = [
+        "Supreme Court of Pakistan",
+        "High Court, Lahore",
+        "High Court, Multan",
+        "High Court, Rawalpindi",
+        "High Court, Islamabad",
+        "District Court",
+        "Special Judicial Magistrate",
+        "Special Judicial Magistrate-30",
+        "Senior Civil Court",
+        "Civil Court",
+        "Family Court",
+        "Guardian Court",
+        "Banking Court-I",
+        "Banking Court-II",
+        "Banking Court-III",
+        "Banking Court-IV",
+        "Banking Court-V",
+        "CNSA Court",
+        "Anti Corruption Court",
+        "ATA-I Court",
+        "ATA-II Court",
+        "ATA-III Court",
+        "Special Tribunal",
+        "Rent Tribunal",
+        "PST Lahore",
+        "FST Lahore",
+        "Revenue Court",
+        "Commissioner",
+        "Special Rent Tribunal",
+        "Environment Tribunal",
+        "Others"
+      ];
+    
 
     const [entries, setEntries] = useState([]);
     const [formData, setFormData] = useState({
@@ -111,7 +147,7 @@ const Addcase = () => {
     const [prevhearing, setPrevHearing] = useState('');
     const [nexthearing, setNextHearing] = useState('');
     const [lawyer, setLawyer] = useState('');
-    const [court, setCourt] = useState('');
+    const [court, setCourt] = useState(courtNames[0]);
     const [title, setTitle] = useState('');
 
     const [message, setMessage] = useState('');
@@ -125,6 +161,8 @@ const Addcase = () => {
     const [showDates, setShowDates] = useState(false);
     const [addcase, setAddcase] = useState(false)
     const [clientname, setClientname] = useState('')
+    const [suitno, setSuitno] = useState('')
+    const [valueofsuit, setValueofsuit] = useState('')
 
 
     const [editIndex, setEditIndex] = useState(-1);
@@ -244,7 +282,10 @@ const Addcase = () => {
             lawyer: lawyer,
             court: court,
             title: title,
-            Clientname : clientname
+            Clientname: clientname,
+            Suitno: suitno,
+            Valueofsuit: valueofsuit
+
         };
 
         try {
@@ -258,6 +299,10 @@ const Addcase = () => {
 
             const data = await response.json();
             if (response.ok) {
+
+                toast.success(data.Message);
+
+
                 setMessage(data.Message || 'Case added successfully!');
                 setIsError(false);
                 setNatureOfSuit('');
@@ -294,11 +339,12 @@ const Addcase = () => {
 
 
             } else {
-                setMessage(data.Message || 'Form submission failed!');
-                setIsError(true);
+                toast.error(data.Message);
             }
+
         } catch (error) {
             setMessage('An unexpected error occurred. Please try again later.');
+            toast.error(error)
             setIsError(true);
         }
     };
@@ -358,18 +404,34 @@ const Addcase = () => {
                             <div className=' flex  justify-evenly space-x-2 mt-3' >
                                 <TextField
                                     className='w-full mb-4'
+                                    label="Suitno"
+                                    variant="outlined"
+                                    onChange={(e) => setSuitno(e.target.value)}
+                                    value={suitno}
+                                />
+
+                                <TextField
+                                    className='w-full mb-4'
                                     label="Title"
                                     variant="outlined"
                                     onChange={(e) => setTitle(e.target.value)}
                                     value={title}
                                 />
-                                <TextField
-                                    className='w-full mb-4'
-                                    label="Court Name"
-                                    variant="outlined"
-                                    onChange={(e) => setCourt(e.target.value)}
+                                {/* <InputLabel id="court-label">Court Name</InputLabel> */}
+                                <Select
+                                    labelId="court-label"
+                                    id="court-select"
                                     value={court}
-                                />
+                                    onChange={(e) => setCourt(e.target.value)}
+                                    label="Court Name"
+                                    className='w-full mb-4'
+                                >
+                                    {courtNames.map((name, index) => (
+                                        <MenuItem key={index} value={name}>
+                                            {name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
 
                                 <TextField
                                     className='w-full mb-4'
@@ -379,6 +441,11 @@ const Addcase = () => {
                                     value={lawyer}
                                 />
 
+
+                            </div>
+
+
+                            <div className=' flex  justify-evenly space-x-2 mt-3' >
                                 <TextField
                                     className='w-full mb-4'
                                     label="Client Name"
@@ -386,7 +453,18 @@ const Addcase = () => {
                                     onChange={(e) => setClientname(e.target.value)}
                                     value={clientname}
                                 />
+
+                                <TextField
+                                    className='w-full mb-4'
+                                    label="Value of suit"
+                                    variant="outlined"
+                                    onChange={(e) => setValueofsuit(e.target.value)}
+                                    value={valueofsuit}
+                                />
                             </div>
+
+
+
                             <div className='flex  justify-evenly space-x-2 mt-3'>
                                 <TextField
                                     className='w-full mb-4'
@@ -863,7 +941,9 @@ const Addcase = () => {
                     </div>
                 </form>
             </div>
+            <Toaster />
         </div>
+
     );
 };
 
