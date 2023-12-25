@@ -38,46 +38,50 @@ const Caseentries = async (req, res) => {
             lawyer,
             court,
             title,
-            Clientname
+            Clientname,
+            Suitno,
+            Valueofsuit
         } = req.body
 
         if (
-            !NatureofSuit ||
-            !PlaintiffsBackground ||
-            !PlaintiffsClaim ||
-            !DefendantsArgument ||
-            !CurrentStatus ||
-            !PlaintiffsRepresentation ||
-            !Defendantrepresentative ||
-            !RestrainingOrder ||
-            !PlaintiffsSubmittedDocuments ||
-            !AdditionalPlaintiffDocuments ||
-            !DefendantsSubmittedDocuments ||
-            !AdditionalDefendantDocuments ||
-            !NoofWitnessesofPlaintiff ||
-            !NoofWitnessesofDefendant ||
-            !filingOfSuit ||
-            !numberOfDefendants ||
-            !poaFilingDatePlaintiff ||
-            !poaFilingDateDefendant ||
-            !defendantsWrittenStatementDate ||
-            !issuesFramedDate ||
-            !restrainingOrderDate ||
-            !prevhearing ||
-            !nexthearing ||
-            !lawyer ||
-            !court ||
-            !title ||
-            !Clientname
+            // !NatureofSuit ||
+            // !PlaintiffsBackground ||
+            // !PlaintiffsClaim ||
+            // !DefendantsArgument ||
+            // !CurrentStatus ||
+            // !PlaintiffsRepresentation ||
+            // !Defendantrepresentative ||
+            // !RestrainingOrder ||
+            // !PlaintiffsSubmittedDocuments ||
+            // !AdditionalPlaintiffDocuments ||
+            // !DefendantsSubmittedDocuments ||
+            // !AdditionalDefendantDocuments ||
+            // !NoofWitnessesofPlaintiff ||
+            // !NoofWitnessesofDefendant ||
+            // !filingOfSuit ||
+            // !numberOfDefendants ||
+            // !poaFilingDatePlaintiff ||
+            // !poaFilingDateDefendant ||
+            // !defendantsWrittenStatementDate ||
+            // !issuesFramedDate ||
+            // !restrainingOrderDate ||
+            // !prevhearing ||
+            // !nexthearing ||
+            // !lawyer ||
+            // !court ||
+            // !title ||
+            // !Clientname ||
+            !Suitno
+            // Valueofsuit
         ) {
             return res.status(400).send({ Message: "Fill All the Fields" });
         }
 
-        // const checksuitno = await Caseentryschema.findOne({ Suitno });
+        const checksuitno = await Caseentryschema.findOne({ Suitno });
 
-        // if (checksuitno) {
-        //     return res.status(409).send({ Message: "Case Already Exists" });
-        // }
+        if (checksuitno) {
+            return res.status(409).send({ Message: "Case Already Exists" });
+        }
 
         const newCaseEntry = new Caseentryschema({
             NatureofSuit,
@@ -107,7 +111,9 @@ const Caseentries = async (req, res) => {
             lawyer,
             court,
             title,
-            Clientname
+            Clientname,
+            Suitno,
+            Valueofsuit
         });
 
         const savedCaseEntry = await newCaseEntry.save()

@@ -4,59 +4,59 @@ const Caseentries = new mongoose.Schema(
   {
     NatureofSuit: {
       type: String,
-      required: true
+      required: false
     },
     PlaintiffsBackground: {
       type: String,
-      required: true
+      required: false
     },
     PlaintiffsClaim: {
       type: String,
-      required: true
+      required: false
     },
     DefendantsArgument: {
       type: String,
-      required: true
+      required: false
     },
     CurrentStatus: {
       type: String,
-      required: true
+      required: false
     },
     PlaintiffsRepresentation: {
       type: String,
-      required: true
+      required: false
     },
     Defendantrepresentative: {
       type: String,
-      required: true
+      required: false
     },
     RestrainingOrder: {
       type: String,
-      required: true
+      required: false
     },
     PlaintiffsSubmittedDocuments: {
       type: [String],
-      required: true
+      required: false
     },
     AdditionalPlaintiffDocuments: {
       type: [String],
-      required: true
+      required: false
     },
     DefendantsSubmittedDocuments: {
       type: [String],
-      required: true
+      required: false
     },
     AdditionalDefendantDocuments: {
       type: [String],
-      required: true
+      required: false
     },
     NoofWitnessesofPlaintiff: {
       type: String,
-      required: true
+      required: false
     },
     NoofWitnessesofDefendant: {
       type: String,
-      required: true
+      required: false
     },
 
     application: [
@@ -71,55 +71,63 @@ const Caseentries = new mongoose.Schema(
 
     filingOfSuit: {
       type: String,
-      required: true
+      required: false
     },
     numberOfDefendants: {
       type: String,
-      required: true
+      required: false
     },
     poaFilingDatePlaintiff: {
       type: String,
-      required: true
+      required: false
     },
     poaFilingDateDefendant: {
       type: String,
-      required: true
+      required: false
     },
     defendantsWrittenStatementDate: {
       type: String,
-      required: true
+      required: false
     },
     issuesFramedDate: {
       type: String,
-      required: true
+      required: false
     },
     restrainingOrderDate: {
       type: String,
-      required: true
+      required: false
     },
     prevhearing: {
       type: String,
-      required: true
+      required: false
     },
     nexthearing: {
       type: String,
-      required: true
+      required: false
     },
     lawyer: {
       type: String,
-      required: true
+      required: false
     },
     Clientname: {
       type: String,
-      // required: true
+      // required: false
     },
     court: {
       type: String,
-      required: true
+      required: false
     },
     title: {
       type: String,
+      required: false
+    },
+    Suitno: {
+      type: String,
       required: true
+    },
+    Valueofsuit: {
+      type: String,
+      required: false
     },
 
 
@@ -131,7 +139,7 @@ const Caseentries = new mongoose.Schema(
       }
     ]
   },
-  { timestamps: true }
+  { timestamps: false }
 );
 
 module.exports = mongoose.model("Caseentries", Caseentries);
