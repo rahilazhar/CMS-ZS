@@ -41,8 +41,8 @@ const SignUpForm = () => {
 
   }
   return (
-   <>
-   <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <>
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2 ">
             <div className="py-17.5 px-26 text-center">
@@ -51,14 +51,14 @@ const SignUpForm = () => {
                 <img className="dark:hidden" src='https://homebusinessmag.com/wp-content/uploads/2019/07/Depositphotos_41649239_s-2019-e1562353249920.jpg' alt="Logo" />
               </Link>
               <p className=" text-2xl font-semibold">
-              Zia & Shah | Associates - Legal Consultants
+                Zia & Shah | Associates - Legal Consultants
               </p>
               <p className="animate-bounce mt-5">
-              Providing Legal Assistance in all sorts of legal matters
+                Providing Legal Assistance in all sorts of legal matters
               </p>
 
               <span className="mt-15 inline-block">
-                
+
               </span>
             </div>
           </div>
@@ -80,6 +80,8 @@ const SignUpForm = () => {
                       type="text"
                       placeholder="Enter your full name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      onChange={(e) => setName(e.target.value)}
+                      value={name}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -115,6 +117,8 @@ const SignUpForm = () => {
                       type="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      onChange={(e) => setEmail(e.target.value)}
+                      value={email}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -146,6 +150,8 @@ const SignUpForm = () => {
                       type="password"
                       placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      onChange={(e) => setPassword(e.target.value)}
+                      value={password}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -172,6 +178,18 @@ const SignUpForm = () => {
                   </div>
                 </div>
 
+                <div>
+                <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Role
+                  </label>
+                  <select className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" id="formFile' onChange={(e) => setRole(e.target.value)}>
+                    <option>--select--</option>
+                    <option value="User">User</option>
+                    <option value="Banker">Banker</option>
+                    <option value="Lawyer">Lawyer</option>
+                  </select>
+                </div>
+
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Image
@@ -180,20 +198,23 @@ const SignUpForm = () => {
                     <input
                       type="file"
                       placeholder="Re-enter your password"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" id="formFile"
+                      onChange={(e) => setProfilePicture(e.target.files[0])} />
 
                     <span className="absolute right-4 top-4">
-                    
+
                     </span>
                   </div>
                 </div>
 
+
+
                 <div className="mb-5">
                   <input
-                    type="submit"
+                    type="button"
                     value="Create account"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                    onClick={Registerhandler}
                   />
                 </div>
 
@@ -234,13 +255,13 @@ const SignUpForm = () => {
                   Sign up with Google
                 </button> */}
 
-              
+
               </form>
             </div>
           </div>
         </div>
       </div>
-   </>
+    </>
   );
 };
 

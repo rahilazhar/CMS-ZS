@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
   const logout = (data) => {
     // Remove the user data from local storage and update state
     sessionStorage.removeItem('user');
+    localStorage.removeItem('user')
     setAuthData(null);
   };
 
