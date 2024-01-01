@@ -272,7 +272,13 @@ const RolebaseCases = () => {
                         <button onClick={() => natureviewhandler(entry)}>View</button>
                       </td>
                       <td className="px- py-4 whitespace-normal text-sm text-gray-500">
-                        <button onClick={() => downloadFile(entry.wordFilePath)}><FaFileDownload className='text-2xl hover:text-black' /></button>
+                        <button onClick={() => downloadFile(entry.wordFilePath)}>
+                          {
+                            entry.wordFilePath
+                              ? <FaFileDownload className='text-2xl text-green-500 hover:text-black' />
+                              : <FaFileDownload className='text-2xl text-red-500 hover:text-black' /> 
+                          }
+                        </button>
                       </td>
                     </tr>
 
