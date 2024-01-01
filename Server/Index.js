@@ -12,7 +12,7 @@ const app = express()
 app.use(express.json())
 require('dotenv').config();
 app.use(cors())
-app.use('/Router/uploads', express.static('Router/uploads'));
+app.use('/uploads', express.static('uploads'));
 
 
 

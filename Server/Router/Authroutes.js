@@ -11,7 +11,7 @@ const multer = require('multer')
 
 
 const storage = multer.diskStorage({
-    destination: "Router/uploads/",
+    destination: "uploads/",
     filename: function (req, file, cb) {
         cb(null, file.originalname)
     }
@@ -19,8 +19,8 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage })
-const upload1 = multer({ dest: 'Router/uploads/' });
-const upload2 = multer({ dest: 'Router/uploads/' });
+const upload1 = multer({ dest: 'uploads/' });
+const upload2 = multer({ dest: 'uploads/' });
 
 
 // ok
