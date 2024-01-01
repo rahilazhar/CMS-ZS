@@ -12,13 +12,16 @@ const app = express()
 app.use(express.json())
 require('dotenv').config();
 app.use(cors())
-app.use('/uploads', express.static('uploads'));
+app.use('/Router/uploads', express.static('Router/uploads'));
 
 
 
 dbconnection()
 
 app.use("/api/v1/auth", router);
+
+
+
 
 app.use(express.static(path.join(__dirname, "public")))
 app.get("*", (req, res) => {

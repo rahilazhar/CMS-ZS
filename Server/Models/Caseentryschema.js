@@ -129,6 +129,10 @@ const Caseentries = new mongoose.Schema(
       type: String,
       required: false
     },
+    wordFilePath: {
+      type: String,
+      required: false
+    },
 
 
 
@@ -139,7 +143,7 @@ const Caseentries = new mongoose.Schema(
       }
     ]
   },
-  { timestamps: false }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Caseentries", Caseentries);

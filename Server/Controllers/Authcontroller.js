@@ -2,6 +2,8 @@ const Userschema = require("../Models/Userschema")
 const bcrypt = require('bcrypt')
 const JWT = require('jsonwebtoken')
 const Caseentriesschema = require('../Models/Caseentryschema')
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 
 const UserRegistration = async (req, res) => {
@@ -27,6 +29,9 @@ const UserRegistration = async (req, res) => {
 }
 
 
+
+
+
 // const GetRoleUsers = async(req, res) => {
 //     try {
 //         let query = {};
@@ -40,7 +45,7 @@ const UserRegistration = async (req, res) => {
 
 //         const cases = await Caseentriesschema.find(query);
 //         res.status(200).send(cases);
-        
+
 //     } catch (error) {
 //         console.error(error);
 //         res.status(500).send({ message: 'Internal Server Error' });
@@ -92,10 +97,10 @@ const logincontroller = async (req, res) => {
             return res.status(400).send('Invalid credentials');
         }
 
-        const token = JWT.sign({ id: user._id , role: user.role }, process.env.JWT_Key, { expiresIn: '7d' });
+        const token = JWT.sign({ id: user._id, role: user.role }, process.env.JWT_Key, { expiresIn: '7d' });
         // Replace 'your_jwt_secret' with a real secret key
 
-        res.status(200).json({ token, role: user.role, email: user.email  , picture: user.profilePicture});
+        res.status(200).json({ token, role: user.role, email: user.email, picture: user.profilePicture });
     } catch (error) {
         res.status(500).send('Server error');
     }

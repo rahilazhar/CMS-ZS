@@ -83,6 +83,18 @@ const Caseentries = async (req, res) => {
             return res.status(409).send({ Message: "Case Already Exists" });
         }
 
+        if (req.file) {
+            const wordFilePath = req.file.path; // path of the uploaded file
+            // You can now use this path to save in your database or any other logic
+        }
+
+        let wordFilePath = "";
+        // Handling the uploaded file
+        if (req.file) {
+            wordFilePath = req.file.path; // path of the uploaded file
+        }
+
+
         const newCaseEntry = new Caseentryschema({
             NatureofSuit,
             PlaintiffsBackground,
@@ -113,7 +125,9 @@ const Caseentries = async (req, res) => {
             title,
             Clientname,
             Suitno,
-            Valueofsuit
+            Valueofsuit,
+            wordFilePath
+            
         });
 
         const savedCaseEntry = await newCaseEntry.save()
@@ -322,6 +336,9 @@ const GetTodayEntries = async (req, res) => {
 
     let endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
+
+    console.log(startOfDay)
+    console.log(endOfDay)
 
     try {
         const Findentries = await Caseentryschema.find({

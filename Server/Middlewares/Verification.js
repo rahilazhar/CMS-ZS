@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
-        console.log('Token:', token); // Log the token
+        // console.log('Token:', token); // Log the token
         const decoded = jwt.verify(token, process.env.JWT_Key); // Ensure secret key matches
         req.user = { id: decoded.id };
         next();
