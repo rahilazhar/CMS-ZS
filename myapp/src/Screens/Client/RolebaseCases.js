@@ -75,32 +75,33 @@ const RolebaseCases = () => {
 
   const downloadFile = async (filename) => {
     try {
-        const response = await axios({
-            url: `${urlapi}/api/v1/auth/downloadWord/${filename}`, // Replace with your server URL and filename
-            method: 'GET',
-            responseType: 'blob', // Important
-        });
+      const response = await axios({
+        url: `https://api.zianshahlegalconsultant.com/${filename}`, // Replace with your server URL and filename
+        method: 'GET',
+        responseType: 'blob', // Important
+      });
 
-        // Create a new Blob object using the response data of the file
-        const file = new Blob([response.data], {
-            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        });
+      // Create a new Blob object using the response data of the file
+      const file = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      });
 
-        // Create a link element, use it to download the file and remove it
-        const fileURL = URL.createObjectURL(file);
-        const fileLink = document.createElement('a');
-        fileLink.href = fileURL;
-        fileLink.setAttribute('download', filename.split('/').pop());
-        document.body.appendChild(fileLink);
-        
-        fileLink.click();
+      // Create a link element, use it to download the file and remove it
+      const fileURL = URL.createObjectURL(file);
+      const fileLink = document.createElement('a');
+      fileLink.href = fileURL;
+      fileLink.setAttribute('download', filename.split('/').pop());
+      document.body.appendChild(fileLink);
 
-        // Clean up and remove the link
-        fileLink.parentNode.removeChild(fileLink);
+      fileLink.click();
+
+      // Clean up and remove the link
+      fileLink.parentNode.removeChild(fileLink);
+      console.log(filename)
     } catch (error) {
-        console.error('Error during file download', error);
+      console.error('Error during file download', error);
     }
-};
+  };
 
 
 
