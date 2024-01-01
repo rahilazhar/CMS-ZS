@@ -20,6 +20,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 const upload1 = multer({ dest: 'Router/uploads/' });
+const upload2 = multer({ dest: 'Router/uploads/' });
 
 
 // ok
@@ -74,7 +75,7 @@ router.get('/downloadWord/:filename', (req, res) => {
 
 
 router.get('/getentries/:id?', Getentries);
-router.put('/editentries/:id', auth, Editallentries)
+router.put('/editentries/:id', auth, upload.single('wordFile'), Editallentries)
 router.post('/reqedit/:id', auth, RequestEdit)
 router.post('/approvedreq/:userId', Approvedrequest)
 router.get('/pendingrequests', ListPendingEditRequests)

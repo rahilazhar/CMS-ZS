@@ -127,7 +127,7 @@ const Caseentries = async (req, res) => {
             Suitno,
             Valueofsuit,
             wordFilePath
-            
+
         });
 
         const savedCaseEntry = await newCaseEntry.save()
@@ -566,12 +566,16 @@ const Editallentries = async (req, res) => {
             return res.status(404).send({ message: "User not found" });
         }
 
+        if (req.file) {
+            updateData.wordFilePath = req.file.path;
+        }
+
         if (approvedUser.isUserApproved) {
             // Update all entries if the user is approved
             const updatedEntry = await Caseentryschema.updateMany({ _id: id }, updateData, { new: true });
             return res.status(200).send({ Message: "Successfully Updated", updatedEntry });
         }
-
+       
         // Check if this specific entry is approved for editing
         if (caseEntry.isEditApproved) {
             const updatedEntry = await Caseentryschema.findByIdAndUpdate(id, updateData, { new: true });
