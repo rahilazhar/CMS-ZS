@@ -19,8 +19,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage })
-const upload1 = multer({ dest: 'uploads/' });
-const upload2 = multer({ dest: 'uploads/' });
+const upload1 = multer({ dest: 'uploads' });
 
 
 // ok
@@ -55,7 +54,8 @@ router.get('/download/:filename', (req, res) => {
 router.get('/downloadWord/:filename', (req, res) => {
     const filename = req.params.filename;
     try {
-        const filePath = path.join(__dirname, 'uploads', filename);
+        const filePath = path.join(__dirname, '..', 'uploads', filename);
+
 
         // Set the response headers for file download
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
