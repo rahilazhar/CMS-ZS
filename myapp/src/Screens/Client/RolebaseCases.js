@@ -76,8 +76,8 @@ const RolebaseCases = () => {
     try {
       // Extract the filename from the word path
       const filename = word.split('\\').pop();
-  
-      const response = await fetch(`${urlapi}/api/v1/auth/downloadWord/Middleware Function.docx`);
+
+      const response = await fetch(`${urlapi}/api/v1/auth/downloadWord/${filename}`);
       if (!response.ok) {
         throw new Error('Download failed');
       }
@@ -93,8 +93,8 @@ const RolebaseCases = () => {
       console.error('Error downloading Word file:', error);
     }
   };
-  
-  
+
+
 
 
 
@@ -238,7 +238,7 @@ const RolebaseCases = () => {
             View Details
           </th>
           <th scope="col" className="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider">
-           Download Wordfile
+            Download Wordfile
           </th>
 
 
