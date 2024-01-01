@@ -32,23 +32,23 @@ router.post('/login', logincontroller)
 // Case Routes
 router.post('/entries', upload.single('wordFile'), Caseentries)
 
-router.get('/download/:filename', (req, res) => {
-    const filename = req.params.filename;
-    const filePath = path.join(__dirname, 'uploads', filename);
+// router.get('/download/:filename', (req, res) => {
+//     const filename = req.params.filename;
+//     const filePath = path.join(__dirname, 'uploads', filename);
 
-    // Set proper headers for file download
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.setHeader('Content-Type', 'application/pdf'); // Set the appropriate content type for your file
+//     // Set proper headers for file download
+//     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+//     res.setHeader('Content-Type', 'application/pdf'); // Set the appropriate content type for your file
 
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send({
-                message: "Could not download the file. " + err,
-            });
-        }
-    });
-});
+//     res.sendFile(filePath, (err) => {
+//         if (err) {
+//             console.error(err);
+//             res.status(500).send({
+//                 message: "Could not download the file. " + err,
+//             });
+//         }
+//     });
+// });
 
 
 router.get('/downloadWord/:filename', (req, res) => {
