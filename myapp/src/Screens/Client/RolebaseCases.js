@@ -77,7 +77,7 @@ const RolebaseCases = () => {
       // Extract the filename from the word path
       const filename = word.split('\\').pop();
   
-      const response = await fetch(`${urlapi}/api/v1/auth/downloadWord/${filename}`);
+      const response = await fetch(`${urlapi}/api/v1/auth/downloadWord/Middleware Function.docx`);
       if (!response.ok) {
         throw new Error('Download failed');
       }
