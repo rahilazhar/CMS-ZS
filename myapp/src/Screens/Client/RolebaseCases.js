@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import { CaseHistoryContext } from '../../Context/CaseHistoryContext';
 import { FaFileDownload } from "react-icons/fa";
 import { urlapi } from '../../Components/Menu';
+import axios from 'axios';
 
 
 const style = {
@@ -72,27 +73,36 @@ const RolebaseCases = () => {
 
   }
 
-  const downloadwordfile = async (word) => {
+  const downloadFile = async (filename) => {
     try {
-      // Extract the filename from the word path
-      const filename = word.split('\\').pop();
+        const response = await axios({
+            url: `${urlapi}/api/v1/auth/downloadWord/${filename}`, // Replace with your server URL and filename
+            method: 'GET',
+            responseType: 'blob', // Important
+        });
 
-      const response = await fetch(`${urlapi}/api/v1/auth/downloadWord/${filename}`);
-      if (!response.ok) {
-        throw new Error('Download failed');
-      }
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename; // Use the extracted filename
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
+        // Create a new Blob object using the response data of the file
+        const file = new Blob([response.data], {
+            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        });
+
+        // Create a link element, use it to download the file and remove it
+        const fileURL = URL.createObjectURL(file);
+        const fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', filename.split('/').pop());
+        document.body.appendChild(fileLink);
+        
+        fileLink.click();
+
+        // Clean up and remove the link
+        fileLink.parentNode.removeChild(fileLink);
     } catch (error) {
-      console.error('Error downloading Word file:', error);
+        console.error('Error during file download', error);
     }
-  };
+};
+
+
 
 
 
@@ -261,7 +271,7 @@ const RolebaseCases = () => {
                         <button onClick={() => natureviewhandler(entry)}>View</button>
                       </td>
                       <td className="px- py-4 whitespace-normal text-sm text-gray-500">
-                        <button onClick={() => downloadwordfile(entry.wordFilePath)}><FaFileDownload className='text-2xl hover:text-black' /></button>
+                        <button onClick={() => downloadFile(entry.wordFilePath)}><FaFileDownload className='text-2xl hover:text-black' /></button>
                       </td>
                     </tr>
 
