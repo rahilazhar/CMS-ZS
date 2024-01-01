@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { CaseHistoryContext } from '../../Context/CaseHistoryContext';
 import { FaFileDownload } from "react-icons/fa";
+import { urlapi } from '../../Components/Menu';
+
 
 const style = {
   position: 'absolute',
@@ -75,7 +77,7 @@ const RolebaseCases = () => {
       // Extract the filename from the word path
       const filename = word.split('\\').pop();
   
-      const response = await fetch(`http://localhost:8000/api/v1/auth/downloadWord/${filename}`);
+      const response = await fetch(`${urlapi}/api/v1/auth/downloadWord/${filename}`);
       if (!response.ok) {
         throw new Error('Download failed');
       }

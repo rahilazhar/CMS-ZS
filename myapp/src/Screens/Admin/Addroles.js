@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { postRole } from '../../Actions/actions';
 import TextField from '@mui/material/TextField';
+import { urlapi } from '../../Components/Menu';
 
 const Addroles = () => {
     const [role, setRole] = useState('');
@@ -10,7 +11,7 @@ const Addroles = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         const roleData = { role }; // Data structure based on your backend requirements
-        dispatch(postRole(roleData, 'http://localhost:8000'));
+        dispatch(postRole(roleData, urlapi));
         setRole(''); // Reset the role input after submission
     };
 

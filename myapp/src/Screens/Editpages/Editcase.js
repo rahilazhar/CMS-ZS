@@ -208,7 +208,7 @@ const Editcase = () => {
         }
     };
 
-
+    const [wordfile, setWordfile] = useState('')
     const [entries, setEntries] = useState([]);
     const [formData, setFormData] = useState({
         srNo: "",
@@ -291,42 +291,68 @@ const Editcase = () => {
     const Updatecasehandler = async (e) => {
         e.preventDefault();
 
-        const updateddata = {
-            title: title,
-            Suitno: suitno,
-            court: courtname,
-            lawyer: lawyer,
-            PlaintiffsBackground: plaintiffsBackground,
-            PlaintiffsClaim: plaintiffsClaim,
-            DefendantsArgument: defendantsArgument,
-            CurrentStatus: currentStatus,
-            PlaintiffsRepresentation: plaintiffsRepresentation,
-            Defendantrepresentative: defendantRepresentative,
-            RestrainingOrder: restrainingOrder,
-            PlaintiffsSubmittedDocuments: plaintiffsSubmittedDocuments,
-            AdditionalPlaintiffDocuments: additionalPlaintiffDocuments,
-            DefendantsSubmittedDocuments: defendantsSubmittedDocuments,
-            AdditionalDefendantDocuments: additionalDefendantDocuments,
-            NoofWitnessesofPlaintiff: noOfWitnessesOfPlaintiff,
-            NoofWitnessesofDefendant: noOfWitnessesOfDefendant,
-            application: entries,
-            filingOfSuit: filingOfSuit,
-            numberOfDefendants: numberOfDefendants,
-            poaFilingDatePlaintiff: poaFilingDatePlaintiff,
-            poaFilingDateDefendant: poaFilingDateDefendant,
-            defendantsWrittenStatementDate: defendantsWrittenStatementDate,
-            issuesFramedDate: issuesFramedDate,
-            restrainingOrderDate: restrainingOrderDate,
-            nexthearing: nexthearing,
-            prevhearing: prevhearing,
-            NatureofSuit: nature
+        let formData = new FormData();
 
+        // Append individual fields to formData
+        // formData.append("NatureofSuit", natureOfSuit);
+        formData.append("PlaintiffsBackground", plaintiffsBackground);
+        formData.append("PlaintiffsClaim", plaintiffsClaim);
+        formData.append("DefendantsArgument", defendantsArgument);
+        formData.append("CurrentStatus", currentStatus);
+        formData.append("PlaintiffsRepresentation", plaintiffsRepresentation);
+        formData.append("Defendantrepresentative", defendantRepresentative);
+        formData.append("RestrainingOrder", restrainingOrder);
 
+        // Append array items individually for PlaintiffsSubmittedDocuments
+        plaintiffsSubmittedDocuments.forEach((doc, index) => {
+            formData.append(`PlaintiffsSubmittedDocuments[${index}]`, doc);
+        });
 
+        // Append array items individually for AdditionalPlaintiffDocuments
+        additionalPlaintiffDocuments.forEach((doc, index) => {
+            formData.append(`AdditionalPlaintiffDocuments[${index}]`, doc);
+        });
 
-        };
+        // Append array items individually for DefendantsSubmittedDocuments
+        defendantsSubmittedDocuments.forEach((doc, index) => {
+            formData.append(`DefendantsSubmittedDocuments[${index}]`, doc);
+        });
+
+        // Append array items individually for AdditionalDefendantDocuments
+        additionalDefendantDocuments.forEach((doc, index) => {
+            formData.append(`AdditionalDefendantDocuments[${index}]`, doc);
+        });
+
+        // Append array items individually for application (entries)
+        entries.forEach((entry, index) => {
+            Object.keys(entry).forEach(key => {
+                formData.append(`application[${index}][${key}]`, entry[key]);
+            });
+        });
+
+        // Append the remaining fields
+        formData.append("filingOfSuit", filingOfSuit);
+        formData.append("numberOfDefendants", numberOfDefendants);
+        formData.append("poaFilingDatePlaintiff", poaFilingDatePlaintiff);
+        formData.append("poaFilingDateDefendant", poaFilingDateDefendant);
+        formData.append("defendantsWrittenStatementDate", defendantsWrittenStatementDate);
+        formData.append("issuesFramedDate", issuesFramedDate);
+        formData.append("restrainingOrderDate", restrainingOrderDate);
+        formData.append("prevhearing", prevhearing);
+        formData.append("nexthearing", nexthearing);
+        formData.append("lawyer", lawyer);
+        // formData.append("court", court);
+        formData.append("title", title);
+        // formData.append("Clientname", clientname);
+        formData.append("Suitno", suitno);
+        formData.append("Valueofsuit", valueofsuit);
+
+        // Append file if it exists
+        if (wordfile) {
+            formData.append("wordFile", wordfile);
+        }
         try {
-            let response = await axios.put(`${urlapi}/api/v1/auth/editentries/${id}`, updateddata, {
+            let response = await axios.put(`${urlapi}/api/v1/auth/editentries/${id}`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}` // Include the token in the header
                 }
@@ -495,6 +521,11 @@ const Editcase = () => {
 
                         <TextField className='w-full' id="standard-basic" label="Suit No"
                             onChange={(e) => setSuitNo(e.target.value)} value={suitno} />
+                    </div>
+                    <div className='flex   mt-3 space-x-2'>
+
+                        <TextField className='w-full' id="standard-basic" label="Word File"
+                            onChange={(e) => setWordfile(e.target.files[0])} type="file" />
                     </div>
 
 
