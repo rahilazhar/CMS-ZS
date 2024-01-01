@@ -12,7 +12,7 @@ const app = express()
 app.use(express.json())
 require('dotenv').config();
 app.use(cors())
-app.use('/uploads', express.static('uploads'));
+app.use('/var/www/CMS-ZS/Server/uploads/uploads', express.static('/var/www/CMS-ZS/Server/uploadsuploads'));
 
 
 
