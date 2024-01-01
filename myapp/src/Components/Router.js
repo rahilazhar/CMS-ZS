@@ -19,6 +19,8 @@ import Adduser from '../Screens/Users/Adduser'
 import Newcaseget from '../Screens/Cases/Newcaseget'
 import RolebaseCases from '../Screens/Client/RolebaseCases'
 import ProtectedRoute from './ProtectedRoutes'
+import Addroles from '../Screens/Admin/Addroles'
+import Usersedit from '../Screens/Users/Usersedit'
 
 
 
@@ -46,6 +48,9 @@ const Router = () => {
         {/* <Route path='/user' element={<ProtectedRoute component={Usersview} allowedRoles={["1"]} />} /> */}
         <Route path='/allusers' element={<ProtectedRoute component={Getusers} allowedRoles={["1"]} />} />
         <Route path='/addusers' element={<ProtectedRoute component={Adduser} allowedRoles={["1"]} />} />
+        <Route path='/addrole' element={<ProtectedRoute component={Addroles} allowedRoles={["1"]} />} />
+        <Route path='/useredit/:id' element={<ProtectedRoute component={Usersedit} allowedRoles={["1"]} />} />
+
         <Route path='/role' element={<RolebaseCases/>}  />
 
 

@@ -12,6 +12,39 @@ import { AuthContext } from '../../Context/AuthContext';
 import { Button } from '@mui/material';
 
 const Editcase = () => {
+    const courtNames = [
+        "Supreme Court of Pakistan",
+        "High Court, Lahore",
+        "High Court, Multan",
+        "High Court, Rawalpindi",
+        "High Court, Islamabad",
+        "District Court",
+        "Special Judicial Magistrate",
+        "Special Judicial Magistrate-30",
+        "Senior Civil Court",
+        "Civil Court",
+        "Family Court",
+        "Guardian Court",
+        "Banking Court-I",
+        "Banking Court-II",
+        "Banking Court-III",
+        "Banking Court-IV",
+        "Banking Court-V",
+        "CNSA Court",
+        "Anti Corruption Court",
+        "ATA-I Court",
+        "ATA-II Court",
+        "ATA-III Court",
+        "Special Tribunal",
+        "Rent Tribunal",
+        "PST Lahore",
+        "FST Lahore",
+        "Revenue Court",
+        "Commissioner",
+        "Special Rent Tribunal",
+        "Environment Tribunal",
+        "Others"
+    ];
     const { id } = useParams()
     const [caseedit, setCaseedit] = useState([])
     const [title, setTitle] = useState('')
@@ -55,7 +88,7 @@ const Editcase = () => {
     const [issuesFramedDate, setIssuesFramedDate] = useState('');
     const [restrainingOrderDate, setRestrainingOrderDate] = useState('');
     const [valueofsuit, setValueofsuit] = useState('')
-   
+
 
 
     // plantiffs
@@ -286,7 +319,7 @@ const Editcase = () => {
             restrainingOrderDate: restrainingOrderDate,
             nexthearing: nexthearing,
             prevhearing: prevhearing,
-            NatureofSuit : nature
+            NatureofSuit: nature
 
 
 
@@ -338,8 +371,8 @@ const Editcase = () => {
 
                 // Assuming 'setCaseedit' and 'setTitle' are state setters
                 setCaseedit(data);
-               
-                 if (data) {
+
+                if (data) {
                     // This assumes that if a single object is returned, it has a 'title' property
                     setTitle(data.title);
                     setSuitNo(data.Suitno)
@@ -443,7 +476,7 @@ const Editcase = () => {
     }, [responseMessage]); // Dependency array, this effect runs every time responseMessage changes
 
 
-        console.log(caseedit.Suitno , 'casedir')
+    console.log(caseedit.Suitno, 'casedir')
 
     return (
         <>
@@ -454,7 +487,7 @@ const Editcase = () => {
 
 
                     <div className='flex   mt-3 space-x-2'>
-                        <TextField  label="Title" className='w-full'
+                        <TextField label="Title" className='w-full'
                             onChange={titlehandler} value={title} />
 
 
@@ -499,25 +532,37 @@ const Editcase = () => {
                     </div> */}
 
                     <div className=' flex space-x-2 mt-3'>
-                        <TextField className=' w-full' id="standard-basic" label="Coutname" 
-                            onChange={(e) => setCourtname(e.target.value)} value={courtname} />
-                        <TextField className=' w-full' id="standard-basic" label="Lawyer Name" 
+                        <Select
+                            labelId="court-label"
+                            id="court-select"
+                            value={courtname}
+                            onChange={(e) => setCourtname(e.target.value)}
+                            label="Court Name"
+                            className='w-full mb-4'
+                        >
+                            {courtNames.map((name, index) => (
+                                <MenuItem key={index} value={name}>
+                                    {name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <TextField className=' w-full' id="standard-basic" label="Lawyer Name"
                             onChange={(e) => setLawyer(e.target.value)} value={lawyer} />
 
                     </div>
 
                     <div className=' flex   space-x-2 mt-3'>
-                        <TextField className=' w-full' id="standard-basic" label="Plaintiff's Background" 
+                        <TextField className=' w-full' id="standard-basic" label="Plaintiff's Background"
                             onChange={(e) => setPlaintiffsBackground(e.target.value)} value={plaintiffsBackground} />
-                        <TextField className=' w-full' id="standard-basic" label="Plaintiff's Claim" 
-                         onChange={(e) => setPlaintiffsClaim(e.target.value)} value={plaintiffsClaim} />
+                        <TextField className=' w-full' id="standard-basic" label="Plaintiff's Claim"
+                            onChange={(e) => setPlaintiffsClaim(e.target.value)} value={plaintiffsClaim} />
 
                     </div>
 
                     <div className=' flex   space-x-2 mt-3'>
-                        <TextField className=' w-full' id="standard-basic" label="Defendant's Argument"                            onChange={(e) => setDefendantsArgument(e.target.value)} value={defendantsArgument} />
-                        <TextField className=' w-full' id="standard-basic" label="Current Status" 
-                          onChange={(e) => setCurrentStatus(e.target.value)} value={currentStatus} />
+                        <TextField className=' w-full' id="standard-basic" label="Defendant's Argument" onChange={(e) => setDefendantsArgument(e.target.value)} value={defendantsArgument} />
+                        <TextField className=' w-full' id="standard-basic" label="Current Status"
+                            onChange={(e) => setCurrentStatus(e.target.value)} value={currentStatus} />
 
                     </div>
 
@@ -525,9 +570,9 @@ const Editcase = () => {
 
 
                     <div className=' flex space-x-2 mt-3'>
-                        <TextField className=' w-full' id="standard-basic" label="Plaintiff's Representation" 
+                        <TextField className=' w-full' id="standard-basic" label="Plaintiff's Representation"
                             onChange={(e) => setPlaintiffsRepresentation(e.target.value)} value={plaintiffsRepresentation} />
-                        <TextField className=' w-full' id="standard-basic" label="Defendant representative" 
+                        <TextField className=' w-full' id="standard-basic" label="Defendant representative"
                             onChange={(e) => setDefendantRepresentative(e.target.value)} value={defendantRepresentative} />
 
                     </div>

@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { CaseHistoryContext } from '../../Context/CaseHistoryContext';
+import { FaFileDownload } from "react-icons/fa";
 
 const style = {
   position: 'absolute',
@@ -41,10 +42,10 @@ const RolebaseCases = () => {
 
   const handleClose = () => setOpen(false);
 
-  
+
   const { casesrole } = useContext(CaseHistoryContext);
 
-  
+
 
 
 
@@ -69,6 +70,30 @@ const RolebaseCases = () => {
 
   }
 
+  const downloadwordfile = async (word) => {
+    try {
+      // Extract the filename from the word path
+      const filename = word.split('\\').pop();
+  
+      const response = await fetch(`http://localhost:8000/api/v1/auth/downloadWord/${filename}`);
+      if (!response.ok) {
+        throw new Error('Download failed');
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename; // Use the extracted filename
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading Word file:', error);
+    }
+  };
+  
+  
+
 
 
 
@@ -79,6 +104,11 @@ const RolebaseCases = () => {
     <>
 
       <main className=' w-full '>
+        <section className="p-4 text-center">
+          <div className="bg-gray-200 shadow-xl p-4 font-semibold text-2xl admin-dashboard-title">
+            View Case
+          </div>
+        </section>
 
         <Modal
           open={open}
@@ -205,7 +235,10 @@ const RolebaseCases = () => {
           <th scope="col" className="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider">
             View Details
           </th>
-         
+          <th scope="col" className="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider">
+           Download Wordfile
+          </th>
+
 
           <tbody>
             {
@@ -225,6 +258,9 @@ const RolebaseCases = () => {
                       <td className="px- py-4 whitespace-normal text-sm text-gray-500">
                         <button onClick={() => natureviewhandler(entry)}>View</button>
                       </td>
+                      <td className="px- py-4 whitespace-normal text-sm text-gray-500">
+                        <button onClick={() => downloadwordfile(entry.wordFilePath)}><FaFileDownload className='text-2xl hover:text-black' /></button>
+                      </td>
                     </tr>
 
 
@@ -234,7 +270,7 @@ const RolebaseCases = () => {
             }
           </tbody>
         </table>
-       
+
       </main>
     </>
   )

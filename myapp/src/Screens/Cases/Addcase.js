@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { urlapi } from '../../Components/Menu'; // Ensure this is the correct import for your setup
 import { FaArrowDownLong } from "react-icons/fa6";
-import { Button ,InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, InputLabel, Select, MenuItem } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRoles } from '../../Actions/actions';
 const Addcase = () => {
     // State variables for all schema fields
     const [natureOfSuit, setNatureOfSuit] = useState('');
@@ -57,8 +59,8 @@ const Addcase = () => {
         "Special Rent Tribunal",
         "Environment Tribunal",
         "Others"
-      ];
-    
+    ];
+
 
     const [entries, setEntries] = useState([]);
     const [formData, setFormData] = useState({
@@ -122,6 +124,8 @@ const Addcase = () => {
         }
     };
 
+
+
     const handleDeleteClick = (index) => {
         const updatedEntries = [...entries];
         updatedEntries.splice(index, 1);
@@ -148,7 +152,9 @@ const Addcase = () => {
     const [nexthearing, setNextHearing] = useState('');
     const [lawyer, setLawyer] = useState('');
     const [court, setCourt] = useState(courtNames[0]);
+    const [role, setRole] = useState('---Select---');
     const [title, setTitle] = useState('');
+
 
     const [message, setMessage] = useState('');
     const [isError, setIsError] = useState(false);
@@ -160,9 +166,10 @@ const Addcase = () => {
     const [showApplications, setShowApplications] = useState(false);
     const [showDates, setShowDates] = useState(false);
     const [addcase, setAddcase] = useState(false)
-    const [clientname, setClientname] = useState('')
+    const [clientname, setClientname] = useState('Select')
     const [suitno, setSuitno] = useState('')
     const [valueofsuit, setValueofsuit] = useState('')
+    const [wordfile, setWordfile] = useState('')
 
 
     const [editIndex, setEditIndex] = useState(-1);
@@ -254,47 +261,75 @@ const Addcase = () => {
 
     const formsubmission = async (event) => {
         event.preventDefault();
-        const caseData = {
-            NatureofSuit: natureOfSuit,
-            PlaintiffsBackground: plaintiffsBackground,
-            PlaintiffsClaim: plaintiffsClaim,
-            DefendantsArgument: defendantsArgument,
-            CurrentStatus: currentStatus,
-            PlaintiffsRepresentation: plaintiffsRepresentation,
-            Defendantrepresentative: defendantRepresentative,
-            RestrainingOrder: restrainingOrder,
-            PlaintiffsSubmittedDocuments: plaintiffsSubmittedDocuments,
-            AdditionalPlaintiffDocuments: additionalPlaintiffDocuments,
-            DefendantsSubmittedDocuments: defendantsSubmittedDocuments,
-            AdditionalDefendantDocuments: additionalDefendantDocuments,
-            NoofWitnessesofPlaintiff: noOfWitnessesOfPlaintiff,
-            NoofWitnessesofDefendant: noOfWitnessesOfDefendant,
-            application: entries,
-            filingOfSuit: filingOfSuit,
-            numberOfDefendants: numberOfDefendants,
-            poaFilingDatePlaintiff: poaFilingDatePlaintiff,
-            poaFilingDateDefendant: poaFilingDateDefendant,
-            defendantsWrittenStatementDate: defendantsWrittenStatementDate,
-            issuesFramedDate: issuesFramedDate,
-            restrainingOrderDate: restrainingOrderDate,
-            prevhearing: prevhearing,
-            nexthearing: nexthearing,
-            lawyer: lawyer,
-            court: court,
-            title: title,
-            Clientname: clientname,
-            Suitno: suitno,
-            Valueofsuit: valueofsuit
+        let formData = new FormData();
 
-        };
+    // Append individual fields to formData
+    formData.append("NatureofSuit", natureOfSuit);
+    formData.append("PlaintiffsBackground", plaintiffsBackground);
+    formData.append("PlaintiffsClaim", plaintiffsClaim);
+    formData.append("DefendantsArgument", defendantsArgument);
+    formData.append("CurrentStatus", currentStatus);
+    formData.append("PlaintiffsRepresentation", plaintiffsRepresentation);
+    formData.append("Defendantrepresentative", defendantRepresentative);
+    formData.append("RestrainingOrder", restrainingOrder);
+
+    // Append array items individually for PlaintiffsSubmittedDocuments
+    plaintiffsSubmittedDocuments.forEach((doc, index) => {
+        formData.append(`PlaintiffsSubmittedDocuments[${index}]`, doc);
+    });
+
+    // Append array items individually for AdditionalPlaintiffDocuments
+    additionalPlaintiffDocuments.forEach((doc, index) => {
+        formData.append(`AdditionalPlaintiffDocuments[${index}]`, doc);
+    });
+
+    // Append array items individually for DefendantsSubmittedDocuments
+    defendantsSubmittedDocuments.forEach((doc, index) => {
+        formData.append(`DefendantsSubmittedDocuments[${index}]`, doc);
+    });
+
+    // Append array items individually for AdditionalDefendantDocuments
+    additionalDefendantDocuments.forEach((doc, index) => {
+        formData.append(`AdditionalDefendantDocuments[${index}]`, doc);
+    });
+
+    // Append array items individually for application (entries)
+    entries.forEach((entry, index) => {
+        Object.keys(entry).forEach(key => {
+            formData.append(`application[${index}][${key}]`, entry[key]);
+        });
+    });
+
+    // Append the remaining fields
+    formData.append("filingOfSuit", filingOfSuit);
+    formData.append("numberOfDefendants", numberOfDefendants);
+    formData.append("poaFilingDatePlaintiff", poaFilingDatePlaintiff);
+    formData.append("poaFilingDateDefendant", poaFilingDateDefendant);
+    formData.append("defendantsWrittenStatementDate", defendantsWrittenStatementDate);
+    formData.append("issuesFramedDate", issuesFramedDate);
+    formData.append("restrainingOrderDate", restrainingOrderDate);
+    formData.append("prevhearing", prevhearing);
+    formData.append("nexthearing", nexthearing);
+    formData.append("lawyer", lawyer);
+    formData.append("court", court);
+    formData.append("title", title);
+    formData.append("Clientname", clientname);
+    formData.append("Suitno", suitno);
+    formData.append("Valueofsuit", valueofsuit);
+
+    // Append file if it exists
+    if (wordfile) {
+        formData.append("wordFile", wordfile);
+    }
+
 
         try {
             const response = await fetch(`${urlapi}/api/v1/auth/entries`, {
                 method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(caseData),
+                // headers: {
+                //     'Content-Type': 'application/json',
+                // },
+                body: formData,
             });
 
             const data = await response.json();
@@ -344,7 +379,7 @@ const Addcase = () => {
 
         } catch (error) {
             setMessage('An unexpected error occurred. Please try again later.');
-            toast.error(error)
+            toast.error(error.message)
             setIsError(true);
         }
     };
@@ -383,6 +418,14 @@ const Addcase = () => {
         }
     };
 
+
+
+    const dispatch = useDispatch();
+    const roles = useSelector(state => state.roles);
+
+    useEffect(() => {
+        dispatch(fetchRoles(urlapi)); // Dispatch the action to fetch roles
+    }, [dispatch]);
 
 
 
@@ -446,13 +489,29 @@ const Addcase = () => {
 
 
                             <div className=' flex  justify-evenly space-x-2 mt-3' >
-                                <TextField
-                                    className='w-full mb-4'
-                                    label="Client Name"
-                                    variant="outlined"
-                                    onChange={(e) => setClientname(e.target.value)}
+
+                                {/* <Select
+                                   
+                                    id=""
                                     value={clientname}
-                                />
+                                    onChange={(e) => setClientname(e.target.value)}
+                                    label="Court Name"
+                                    className='w-full mb-4'
+                                > */}
+
+                                <Select
+                                    value={clientname}
+                                    label="Client Name"
+                                    onChange={(e) => setClientname(e.target.value)}
+                                    className='w-full'
+                                >
+                                    {roles.map((role, index) => (
+                                        <MenuItem key={index} value={role}>
+                                            {role}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+
 
                                 <TextField
                                     className='w-full mb-4'
@@ -461,6 +520,15 @@ const Addcase = () => {
                                     onChange={(e) => setValueofsuit(e.target.value)}
                                     value={valueofsuit}
                                 />
+
+                            </div>
+
+                            <div className='flex  justify-evenly space-x-2 mt-3'>
+                                <input
+                                    type="file"
+                                    placeholder="Re-enter your password"
+                                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" id="formFile"
+                                    onChange={(e) => setWordfile(e.target.files[0])} />
                             </div>
 
 

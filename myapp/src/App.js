@@ -7,13 +7,6 @@ import { UserProvider } from './Context/Usercontext';
 import Loader from './Components/Loaders/Loaderapp';
 import Welcome from './Components/Welcome';
 
-
-
-
-
-
-
-
 const App = () => {
   const [showWelcome, setShowWelcome] = useState(true);
 

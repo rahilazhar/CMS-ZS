@@ -1,6 +1,9 @@
 // actions.js
 import axios from 'axios';
-import { SET_ENTRIES_ALL, SET_ERROR , SET_TODAY_CASES, SET_LOADING  , DELETE_ENTRY} from './actionTypes';
+import toast, { Toaster } from 'react-hot-toast';
+
+
+import { SET_ENTRIES_ALL, SET_ERROR, SET_TODAY_CASES, SET_LOADING, DELETE_ENTRY, SET_ROLES, POST_ROLE_SUCCESS, FETCH_USER_SUCCESS, UPDATE_USER_SUCCESS } from './actionTypes';
 
 export const setEntriesAll = (data) => ({
   type: SET_ENTRIES_ALL,
@@ -26,6 +29,30 @@ export const deleteEntrySuccess = (id) => ({
   type: DELETE_ENTRY,
   payload: id,
 });
+
+export const setRoles = (data) => ({
+  type: SET_ROLES,
+  payload: data,
+});
+
+export const postRoleSuccess = (roleData) => ({
+  type: POST_ROLE_SUCCESS,
+  payload: roleData,
+});
+
+export const fetchUserSuccess = (userData) => ({
+  type: FETCH_USER_SUCCESS,
+  payload: userData,
+});
+
+export const updateUserSuccess = (userData) => ({
+  type: UPDATE_USER_SUCCESS,
+  payload: userData,
+});
+
+
+
+
 
 export const fetchEntries = (urlapi) => async (dispatch) => {
   try {
@@ -63,3 +90,57 @@ export const deleteEntry = (id, urlapi) => async (dispatch) => {
     alert('Failed to delete the case'); // Or display the error message from the server
   }
 };
+
+
+export const fetchRoles = (urlapi) => async (dispatch) => {
+  try {
+    const response = await axios.get(`${urlapi}/api/v1/auth/getrole`);
+    if (response.data.length > 0) {
+      dispatch(setRoles(response.data[0].role)); // Assuming the roles are in the first object of the array
+    }
+  } catch (error) {
+    dispatch(setError(error));
+  }
+};
+
+
+export const postRole = (roleData, urlapi) => async (dispatch) => {
+  try {
+    const response = await axios.post(`${urlapi}/api/v1/auth/addrole`, roleData);
+    dispatch(postRoleSuccess(response.data)); // Assuming you want to store the response in the Redux store
+    alert('Role added successfully'); // Or handle success in a more sophisticated way
+  } catch (error) {
+    dispatch(setError(error));
+    alert('Failed to add role'); // Or display the error message from the server
+  }
+};
+
+
+export const fetchUser = (id, urlapi) => async (dispatch) => {
+  try {
+    const response = await fetch(`${urlapi}/api/v1/auth/getallusers/${id}`);
+    const data = await response.json();
+    dispatch(fetchUserSuccess(data));
+  } catch (error) {
+    dispatch(setError(error));
+  }
+};
+
+export const updateUser = (id, formData, urlapi , setIsLoading) => async (dispatch) => {
+  try {
+    setIsLoading(true)
+    const response = await fetch(`${urlapi}/api/v1/auth/editusers/${id}`, {
+      method: 'put',
+      body: formData,
+    });
+    const data = await response.json();
+    dispatch(updateUserSuccess(data));
+    setIsLoading(false)
+    toast.success(data.Message);
+
+  } catch (error) {
+    dispatch(setError(error));
+    toast.error('An error occurred during the update');
+  }
+};
+

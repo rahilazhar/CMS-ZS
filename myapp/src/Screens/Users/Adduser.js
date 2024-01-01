@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaImage } from "react-icons/fa";
 import { urlapi } from '../../Components/Menu';
-
+import { fetchRoles } from '../../Actions/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const SignUpForm = () => {
 
@@ -11,6 +12,7 @@ const SignUpForm = () => {
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('')
   const [profilePicture, setProfilePicture] = useState(null)
+  // const [roles, setRoles] = useState([])
 
   const Registerhandler = async (e) => {
     e.preventDefault()
@@ -32,14 +34,20 @@ const SignUpForm = () => {
         // the browser will automatically set it to multipart/form-data
         // "Authorization": token ? `Bearer ${token}` : 'No Token Found'
       }
-
-
     })
     response = await response.json()
     alert(response.message)
 
-
   }
+
+  const dispatch = useDispatch();
+  const roles = useSelector(state => state.roles);
+
+  useEffect(() => {
+    dispatch(fetchRoles('http://localhost:8000')); // Dispatch the action to fetch roles
+  }, [dispatch]);
+
+
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -179,14 +187,14 @@ const SignUpForm = () => {
                 </div>
 
                 <div>
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Role
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Client Name
                   </label>
-                  <select className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" id="formFile' onChange={(e) => setRole(e.target.value)}>
+                  <select className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary' id="formFile" onChange={(e) => setRole(e.target.value)}>
                     <option>--select--</option>
-                    <option value="User">User</option>
-                    <option value="Banker">Banker</option>
-                    <option value="Lawyer">Lawyer</option>
+                    {roles.map((role, index) => (
+                      <option key={index} value={role}>{role}</option>
+                    ))}
                   </select>
                 </div>
 
