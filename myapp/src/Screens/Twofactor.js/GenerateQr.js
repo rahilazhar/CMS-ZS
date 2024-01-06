@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { urlapi } from '../../Components/Menu';
 
 const TwoFactorAuthSetup = () => {
     const [qrCode, setQrCode] = useState('');
@@ -12,7 +13,7 @@ const TwoFactorAuthSetup = () => {
 
     const enableTwoFactorAuth = async () => {
         try {
-            const response = await axios.post(`http://localhost:8000/api/v1/auth/enable-2fa/${id}`); // Update with your API endpoint
+            const response = await axios.post(`${urlapi}/api/v1/auth/enable-2fa/${id}`); // Update with your API endpoint
             setQrCode(response.data.imageUrl);
             setMessage(response.data.message);
             setIs2FAEnabled(true);
