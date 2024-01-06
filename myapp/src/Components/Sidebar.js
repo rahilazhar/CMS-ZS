@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Menue } from '../Components/Menu'
+// import { Menue } from '../Components/Menu'
 import Router from '../Components/Router'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../Context/AuthContext';
-import { CaseHistoryContext } from '../Context/CaseHistoryContext';
+// import { CaseHistoryContext } from '../Context/CaseHistoryContext';
 import { urlapi } from '../Components/Menu'
 import { IoPersonAdd, IoLogOut } from "react-icons/io5"
 import { FaUsers } from "react-icons/fa6";
@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
 
-  const navigate= useNavigate()
+  const navigate = useNavigate()
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -63,7 +63,7 @@ const Sidebar = () => {
 
   return (
     <>
-     
+
 
       <aside id="sidebar-multi-level-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
         <div class="h-full px-3 py-4 overflow--auto bg-gray-50 dark:bg-gray-800">
@@ -194,34 +194,39 @@ const Sidebar = () => {
 
 
 
-            {role === "1" && (
-              <div>
-                <button
-                  type="button"
-                  className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  onClick={toggleDropdown}
-                >
-                  <IoIosSettings className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white' />
-                  <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Settings</span>
-                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                  </svg>
-                </button>
-                {isDropdownOpen && (
-                  <ul id="dropdown-example" className="py-2 space-y-2">
-                    <li>
-                      <Link to="/addrole" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Add Role</Link>
-                    </li>
-                    {/* <li>
-                      <Link to="/billing" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Billing</Link>
-                    </li>
-                    <li>
-                      <Link to="/invoice" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Invoice</Link>
-                    </li> */}
-                  </ul>
-                )}
-              </div>
-            )}
+
+            <div>
+              <button
+                type="button"
+                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                onClick={toggleDropdown}
+              >
+                <IoIosSettings className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white' />
+                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Settings</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                </svg>
+              </button>
+
+              {isDropdownOpen && (
+                <ul id="dropdown-example" className="py-2 space-y-2">
+                  {role === "1" && (
+                   
+                      <li>
+                        <Link to="/addrole" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Add Role</Link>
+                      </li>
+                      )}
+                      <li>
+                        <Link to="/generateqrcode" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">2F Authentication</Link>
+                      </li>
+                   
+                 
+                 
+                </ul>
+              )}
+            </div>
+
+
 
 
 

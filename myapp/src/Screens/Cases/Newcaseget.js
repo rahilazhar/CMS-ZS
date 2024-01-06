@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import { AiFillEye } from 'react-icons/ai'
 import { FaRegEdit } from "react-icons/fa";
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import {Input} from '@mui/material';
 
 
 const style = {
@@ -311,33 +312,37 @@ const Newcaseget = () => {
                 </Modal>
 
                 {/* End */}
-                <div className="search-bar p-3">
-                    <input
-                        type="text"
-                        placeholder="Search by Title..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full border border-gray-300"
-                    />
+                <div className='grid grid-cols-2'>
+                    <div className="search-bar p-3">
+                        <Input
+                            type=""
+                            placeholder="Search by Title..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full py-3"
+                        />
+                    </div>
+
+                    <div className="court-dropdown p-4">
+                        <FormControl fullWidth>
+                            <InputLabel id="court-select-label">Select Court</InputLabel>
+                            <Select
+                                labelId="court-select-label"
+                                id="court-select"
+                                value={selectedCourt}
+                                label="Select Court"
+                                onChange={(e) => setSelectedCourt(e.target.value)}
+                            >
+                                <MenuItem value="">All Courts</MenuItem>
+                                {courtNames.map((courtName, index) => (
+                                    <MenuItem key={index} value={courtName}>{courtName}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </div>
                 </div>
 
-                <div className="court-dropdown p-4">
-                    <FormControl fullWidth>
-                        <InputLabel id="court-select-label">Select Court</InputLabel>
-                        <Select
-                            labelId="court-select-label"
-                            id="court-select"
-                            value={selectedCourt}
-                            label="Select Court"
-                            onChange={(e) => setSelectedCourt(e.target.value)}
-                        >
-                            <MenuItem value="">All Courts</MenuItem>
-                            {courtNames.map((courtName, index) => (
-                                <MenuItem key={index} value={courtName}>{courtName}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </div>
+
                 <div className=' bg-gray-200 shadow-xl p-4 font-semibold text-2xl'>All Cases</div>
 
 

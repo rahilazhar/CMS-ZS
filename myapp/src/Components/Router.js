@@ -19,8 +19,9 @@ import Adduser from '../Screens/Users/Adduser'
 import Newcaseget from '../Screens/Cases/Newcaseget'
 import RolebaseCases from '../Screens/Client/RolebaseCases'
 import ProtectedRoute from './ProtectedRoutes'
-import Addroles from '../Screens/Admin/Addroles'
+import Addroles from '../Screens/Settings/Admin/Addroles'
 import Usersedit from '../Screens/Users/Usersedit'
+import TwoFactorAuthSetup from '../Screens/Twofactor.js/GenerateQr'
 
 
 
@@ -51,7 +52,9 @@ const Router = () => {
         <Route path='/addrole' element={<ProtectedRoute component={Addroles} allowedRoles={["1"]} />} />
         <Route path='/useredit/:id' element={<ProtectedRoute component={Usersedit} allowedRoles={["1"]} />} />
 
-        <Route path='/role' element={<RolebaseCases/>}  />
+
+        <Route path='/generateqrcode' element={<TwoFactorAuthSetup />} />
+        <Route path='/role' element={<RolebaseCases />} />
 
 
 

@@ -9,6 +9,10 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordShown, setPasswordShown] = useState(false);
+  const [isTwoFactorAuthRequired, setIsTwoFactorAuthRequired] = useState(false);
+  const [twoFactorCode, setTwoFactorCode] = useState('');
+  const [userId, setUserId] = useState(null);
+
 
 
   const navigate = useNavigate()
@@ -17,37 +21,80 @@ function LoginPage() {
 
   const { login } = useAuth(); // Use the login function from the AuthContext
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+
+
+
+
+  const handleLogin = async () => {
 
     try {
-      // Replace with your actual login API endpoint
       const response = await axios.post(`${urlapi}/api/v1/auth/login`, { email, password });
-      const { token, id, role, name, picture } = response.data;
 
-      // Use the login function from AuthContext to set the user as logged in
-      login({ email, role, id, name, token, picture }); // Pass the response data to the login context method
-      if (role === "1") {
-        navigate('/')
-      } else if (role !== 0) {
-        navigate('/role')
+      if (response.data.twoFactorRequired) {
+        setIsTwoFactorAuthRequired(true);
+        setUserId(response.data.userId); // Make sure this is the correct property from your response
       } else {
-        navigate('/*') // Redirect to a login page or other appropriate route
+        const { token, id, role, name, picture } = response.data;
+        login({ email, role, id, name, token, picture });
+
+        if (role === "1") {
+          navigate('/')
+        } else if (role !== 0) {
+          navigate('/role')
+        } else {
+          navigate('/*') // Redirect to a login page or other appropriate route
+        }
       }
-      // After successful login, redirect to the desired page
-      // Redirect to the homepage or dashboard as per your routing setup
-      alert('Login Successful');
-      console.log(role, 'Role_______')
-
-
-
-
     } catch (error) {
       console.error('Login Failed:', error.response ? error.response.data : error.message);
-      // You can alert or show error to the user here
       alert('Login failed: ' + (error.response ? error.response.data.message : error.message));
     }
   };
+
+
+  const handle2FAVerification = async () => {
+    if (isTwoFactorAuthRequired) {
+      // Call the API endpoint to verify the 2FA code
+      try {
+        const response = await axios.post(`http://localhost:8000/api/v1/auth/verify-2fa`, { userId, twoFactorToken: twoFactorCode });
+
+        if (response.data.Message == "Login") {
+          alert('hellow'); // Navigates to the home route
+          const { token, id, role, name, picture , } = response.data;
+          login({ email, role, id, name, token, picture });
+          if (role === "1") {
+            navigate('/')
+          } else if (role !== 0) {
+            navigate('/role')
+          } else {
+            navigate('/*') // Redirect to a login page or other appropriate route
+          }
+          // 2FA Verification successful, navigate to the home page
+
+
+        } else {
+          // Handle non-200 responses
+          alert('2FA Verification failed');
+        }
+      } catch (error) {
+        console.error('2FA Verification Failed:', error.response ? error.response.data : error.message);
+        alert('2FA Verification failed: ' + (error.response ? error.response.data.message : error.message));
+      }
+    };
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (isTwoFactorAuthRequired) {
+      handle2FAVerification();
+    } else {
+      handleLogin();
+    }
+  };
+
+
+
 
   const togglePasswordVisibility = () => {
     setPasswordShown(passwordShown => !passwordShown);
@@ -55,6 +102,27 @@ function LoginPage() {
 
   return (
     <>
+      {isTwoFactorAuthRequired ? (
+        <div className="flex flex-col items-center justify-center p-6 m-6 border border-gray-300 rounded-lg shadow-lg">
+          <p className="mb-4 text-lg font-semibold text-gray-700">Please enter your two-factor authentication code:</p>
+          <input
+            type="text"
+            placeholder="2FA Code"
+            value={twoFactorCode}
+            onChange={(e) => setTwoFactorCode(e.target.value)}
+            className="px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          />
+          <button
+            onClick={handle2FAVerification}
+            className="px-6 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Verify 2FA Code
+          </button>
+        </div>
+      ) 
+      : (
+
+
       <section className="bg-gray-50 min-h-screen flex items-center justify-center bg-cover" style={{ backgroundImage: 'url(https://png.pngtree.com/thumb_back/fh260/background/20230714/pngtree-d-render-of-a-lawyer-s-office-with-a-judge-s-image_3888408.jpg)', }}>
         {/* login container */}
         <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
@@ -63,18 +131,18 @@ function LoginPage() {
             <h2 className="font-bold text-2xl text-[#002D74]">Login</h2>
             <p className="text-xs mt-4 text-[#002D74]">If you are already a member, easily log in</p>
             <form action className="flex flex-col gap-4" onSubmit={handleSubmit}>
-              <input className="p-2 mt-8 rounded-xl border" type="email" name="email" placeholder="Email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}/>
+              <input className="p-2 mt-8 rounded-xl border" type="email" name="email" placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} />
 
 
               <div className="relative">
-                <input className="p-2 rounded-xl border w-full"  type={passwordShown ? "text" : "password"} name="password" placeholder="Password" 
-                 value={password}
-                 onChange={(e) => setPassword(e.target.value)}/>
+                <input className="p-2 rounded-xl border w-full" type={passwordShown ? "text" : "password"} name="password" placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)} />
 
 
-                <svg xmlns="http://www.w3.org/2000/svg"   onClick={togglePasswordVisibility} width={16} height={16} fill="gray" className="bi bi-eye absolute top-1/2 right-3 -translate-y-1/2" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" onClick={togglePasswordVisibility} width={16} height={16} fill="gray" className="bi bi-eye absolute top-1/2 right-3 -translate-y-1/2" viewBox="0 0 16 16">
                   <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
                   <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                 </svg>
@@ -109,8 +177,11 @@ function LoginPage() {
           </div>
         </div>
       </section>
+      )}
+
     </>
   );
 }
+
 
 export default LoginPage;

@@ -28,16 +28,17 @@ const Getusers = () => {
         <main className='w-full'>
             <div className="container mx-auto mt-5">
                 <div className="shadow-lg mt-2">
-                    <table className="min-w-full leading-normal">
+                    <table className="min-w-full leading-normal text-center">
                         <thead>
-                            <tr className="bg-gray-100">
-                                <th className="px-4 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
-                                <th className="px-4 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Profile</th>
-                                <th className="px-4 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-                                <th className="px-4 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                                <th className="px-4 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
-                                <th className="px-4 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                                <th className="px-4 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
+                            <tr className="bg-gray-100 ">
+                                <th className="px-4 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase ">#</th>
+                                <th className="px-4 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase ">Profile</th>
+                                <th className="px-4 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase ">Name</th>
+                                <th className="px-4 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase ">Email</th>
+                                {/* <th className="px-4 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase ">Total Cases</th> */}
+                                <th className="px-4 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase ">Role</th>
+                                <th className="px-4 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase ">Status</th>
+                                <th className="px-4 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase ">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,6 +51,7 @@ const Getusers = () => {
                                         </td>
                                         <td className="px-4 py-3 border-b border-gray-200">{item.name}</td>
                                         <td className="px-4 py-3 border-b border-gray-200">{item.email}</td>
+                                        {/* <td className="px-4 py-3 border-b border-gray-200">{item.totalCases}</td> */}
                                         <td className="px-4 py-3 border-b border-gray-200">{item.role}</td>
                                         <td className="px-4 py-3 border-b border-gray-200">
                                             <select

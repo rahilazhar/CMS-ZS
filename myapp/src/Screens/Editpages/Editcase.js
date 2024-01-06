@@ -10,6 +10,8 @@ import Select from '@mui/material/Select';
 import { UserContext } from '../../Context/Usercontext';
 import { AuthContext } from '../../Context/AuthContext';
 import { Button } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRoles } from '../../Actions/actions';
 
 const Editcase = () => {
     const courtNames = [
@@ -88,6 +90,7 @@ const Editcase = () => {
     const [issuesFramedDate, setIssuesFramedDate] = useState('');
     const [restrainingOrderDate, setRestrainingOrderDate] = useState('');
     const [valueofsuit, setValueofsuit] = useState('')
+    const [clientname, setClientname] = useState('')
 
 
 
@@ -346,6 +349,7 @@ const Editcase = () => {
         // formData.append("Clientname", clientname);
         formData.append("Suitno", suitno);
         formData.append("Valueofsuit", valueofsuit);
+        formData.append("Clientname", clientname);
 
         // Append file if it exists
         if (wordfile) {
@@ -436,6 +440,8 @@ const Editcase = () => {
                     setDefendantsWrittenStatementDate(data.defendantsWrittenStatementDate)
                     setIssuesFramedDate(data.issuesFramedDate)
                     setRestrainingOrderDate(data.restrainingOrderDate)
+                    setClientname(data.Clientname)
+                    setValueofsuit(data.Valueofsuit)
 
 
 
@@ -502,7 +508,13 @@ const Editcase = () => {
     }, [responseMessage]); // Dependency array, this effect runs every time responseMessage changes
 
 
-    console.log(caseedit.Suitno, 'casedir')
+
+    const dispatch = useDispatch();
+    const roles = useSelector(state => state.roles);
+    useEffect(() => {
+        dispatch(fetchRoles(urlapi)); // Dispatch the action to fetch roles
+    }, [dispatch]);
+
 
     return (
         <>
@@ -522,6 +534,30 @@ const Editcase = () => {
                         <TextField className='w-full' id="standard-basic" label="Suit No"
                             onChange={(e) => setSuitNo(e.target.value)} value={suitno} />
                     </div>
+
+
+                    <div className='flex   mt-3 space-x-2'>
+                        <Select
+                            value={clientname}
+                            label="Client Name"
+                            onChange={(e) => setClientname(e.target.value)}
+                            className='w-full'
+                        >
+                            {roles.map((role, index) => (
+                                <MenuItem key={index} value={role}>
+                                    {role}
+                                </MenuItem>
+                            ))}
+                        </Select>
+
+
+
+
+                        <TextField className='w-full' id="standard-basic" label="Value of Suit"
+                            onChange={(e) => setValueofsuit(e.target.value)} value={valueofsuit} />
+                    </div>
+
+
                     <div className='flex   mt-3 space-x-2'>
 
                         <TextField className='w-full' id="standard-basic" label="Word File"

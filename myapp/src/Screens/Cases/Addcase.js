@@ -170,6 +170,10 @@ const Addcase = () => {
     const [suitno, setSuitno] = useState('')
     const [valueofsuit, setValueofsuit] = useState('')
     const [wordfile, setWordfile] = useState('')
+    const [isToastVisible, setIsToastVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+
 
 
     const [editIndex, setEditIndex] = useState(-1);
@@ -261,66 +265,67 @@ const Addcase = () => {
 
     const formsubmission = async (event) => {
         event.preventDefault();
+        setIsLoading(true); // Start loading
         let formData = new FormData();
 
-    // Append individual fields to formData
-    formData.append("NatureofSuit", natureOfSuit);
-    formData.append("PlaintiffsBackground", plaintiffsBackground);
-    formData.append("PlaintiffsClaim", plaintiffsClaim);
-    formData.append("DefendantsArgument", defendantsArgument);
-    formData.append("CurrentStatus", currentStatus);
-    formData.append("PlaintiffsRepresentation", plaintiffsRepresentation);
-    formData.append("Defendantrepresentative", defendantRepresentative);
-    formData.append("RestrainingOrder", restrainingOrder);
+        // Append individual fields to formData
+        formData.append("NatureofSuit", natureOfSuit);
+        formData.append("PlaintiffsBackground", plaintiffsBackground);
+        formData.append("PlaintiffsClaim", plaintiffsClaim);
+        formData.append("DefendantsArgument", defendantsArgument);
+        formData.append("CurrentStatus", currentStatus);
+        formData.append("PlaintiffsRepresentation", plaintiffsRepresentation);
+        formData.append("Defendantrepresentative", defendantRepresentative);
+        formData.append("RestrainingOrder", restrainingOrder);
 
-    // Append array items individually for PlaintiffsSubmittedDocuments
-    plaintiffsSubmittedDocuments.forEach((doc, index) => {
-        formData.append(`PlaintiffsSubmittedDocuments[${index}]`, doc);
-    });
-
-    // Append array items individually for AdditionalPlaintiffDocuments
-    additionalPlaintiffDocuments.forEach((doc, index) => {
-        formData.append(`AdditionalPlaintiffDocuments[${index}]`, doc);
-    });
-
-    // Append array items individually for DefendantsSubmittedDocuments
-    defendantsSubmittedDocuments.forEach((doc, index) => {
-        formData.append(`DefendantsSubmittedDocuments[${index}]`, doc);
-    });
-
-    // Append array items individually for AdditionalDefendantDocuments
-    additionalDefendantDocuments.forEach((doc, index) => {
-        formData.append(`AdditionalDefendantDocuments[${index}]`, doc);
-    });
-
-    // Append array items individually for application (entries)
-    entries.forEach((entry, index) => {
-        Object.keys(entry).forEach(key => {
-            formData.append(`application[${index}][${key}]`, entry[key]);
+        // Append array items individually for PlaintiffsSubmittedDocuments
+        plaintiffsSubmittedDocuments.forEach((doc, index) => {
+            formData.append(`PlaintiffsSubmittedDocuments[${index}]`, doc);
         });
-    });
 
-    // Append the remaining fields
-    formData.append("filingOfSuit", filingOfSuit);
-    formData.append("numberOfDefendants", numberOfDefendants);
-    formData.append("poaFilingDatePlaintiff", poaFilingDatePlaintiff);
-    formData.append("poaFilingDateDefendant", poaFilingDateDefendant);
-    formData.append("defendantsWrittenStatementDate", defendantsWrittenStatementDate);
-    formData.append("issuesFramedDate", issuesFramedDate);
-    formData.append("restrainingOrderDate", restrainingOrderDate);
-    formData.append("prevhearing", prevhearing);
-    formData.append("nexthearing", nexthearing);
-    formData.append("lawyer", lawyer);
-    formData.append("court", court);
-    formData.append("title", title);
-    formData.append("Clientname", clientname);
-    formData.append("Suitno", suitno);
-    formData.append("Valueofsuit", valueofsuit);
+        // Append array items individually for AdditionalPlaintiffDocuments
+        additionalPlaintiffDocuments.forEach((doc, index) => {
+            formData.append(`AdditionalPlaintiffDocuments[${index}]`, doc);
+        });
 
-    // Append file if it exists
-    if (wordfile) {
-        formData.append("wordFile", wordfile);
-    }
+        // Append array items individually for DefendantsSubmittedDocuments
+        defendantsSubmittedDocuments.forEach((doc, index) => {
+            formData.append(`DefendantsSubmittedDocuments[${index}]`, doc);
+        });
+
+        // Append array items individually for AdditionalDefendantDocuments
+        additionalDefendantDocuments.forEach((doc, index) => {
+            formData.append(`AdditionalDefendantDocuments[${index}]`, doc);
+        });
+
+        // Append array items individually for application (entries)
+        entries.forEach((entry, index) => {
+            Object.keys(entry).forEach(key => {
+                formData.append(`application[${index}][${key}]`, entry[key]);
+            });
+        });
+
+        // Append the remaining fields
+        formData.append("filingOfSuit", filingOfSuit);
+        formData.append("numberOfDefendants", numberOfDefendants);
+        formData.append("poaFilingDatePlaintiff", poaFilingDatePlaintiff);
+        formData.append("poaFilingDateDefendant", poaFilingDateDefendant);
+        formData.append("defendantsWrittenStatementDate", defendantsWrittenStatementDate);
+        formData.append("issuesFramedDate", issuesFramedDate);
+        formData.append("restrainingOrderDate", restrainingOrderDate);
+        formData.append("prevhearing", prevhearing);
+        formData.append("nexthearing", nexthearing);
+        formData.append("lawyer", lawyer);
+        formData.append("court", court);
+        formData.append("title", title);
+        formData.append("Clientname", clientname);
+        formData.append("Suitno", suitno);
+        formData.append("Valueofsuit", valueofsuit);
+
+        // Append file if it exists
+        if (wordfile) {
+            formData.append("wordFile", wordfile);
+        }
 
 
         try {
@@ -333,9 +338,13 @@ const Addcase = () => {
             });
 
             const data = await response.json();
+            setIsLoading(false); // Stop loading on response
             if (response.ok) {
-
-                toast.success(data.Message);
+                if (!isToastVisible) {
+                    toast.success(data.Message);
+                    setIsToastVisible(true);
+                    setTimeout(() => setIsToastVisible(false), 5000); // reset after 5 seconds
+                }
 
 
                 setMessage(data.Message || 'Case added successfully!');
@@ -374,6 +383,7 @@ const Addcase = () => {
 
 
             } else {
+                setIsLoading(false); // Stop loading on error
                 toast.error(data.Message);
             }
 
@@ -383,6 +393,8 @@ const Addcase = () => {
             setIsError(true);
         }
     };
+
+
     // plantiff;s
     const handleAddPlaintiffsSubmittedDocument = () => {
         if (plaintiffsSubmittedDocument) {
@@ -998,7 +1010,7 @@ const Addcase = () => {
 
 
 
-
+                    {/* 
                     <div className=' flex justify-center mt-10'>
                         <button className=' bg-purple-300 px-10 py-2 rounded hover:text-white' type='submit'>Submit</button>
                         {message && (
@@ -1006,7 +1018,20 @@ const Addcase = () => {
                                 {message}
                             </div>
                         )}
+                    </div> */}
+                    <div className='flex justify-center mt-10'>
+                        {isLoading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            <button className='bg-purple-300 px-10 py-2 rounded hover:text-white' type='submit'>Submit</button>
+                        )}
+                        {/* {message && (
+                            <div className={`p-4 text-center ${isError ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
+                                {message}
+                            </div>
+                        )} */}
                     </div>
+
                 </form>
             </div>
             <Toaster />
