@@ -24,10 +24,10 @@ app.use("/api/v1/auth", router);
 
 
 
-// app.use(express.static(path.join(__dirname, "public")))
-// app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname, "public", "index.html"));
-// });
+app.use(express.static(path.join(__dirname, "public")))
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 
 PORT = process.env.PORT || 3000

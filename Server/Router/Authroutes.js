@@ -8,6 +8,8 @@ const path = require("path");
 const Docxtemplater = require('docxtemplater');
 const fs = require('fs');
 const multer = require('multer')
+const { enableTwoFactorAuth } = require('../Controllers/Twofactor')
+const {verifyTwoFactorAuth} = require('../Middlewares/Verifytwofactor')
 
 
 const storage = multer.diskStorage({
@@ -31,6 +33,7 @@ router.post('/login', logincontroller)
 
 // Case Routes
 router.post('/entries', upload.single('wordFile'), Caseentries)
+
 
 
 
@@ -88,6 +91,9 @@ router.get('/getusersonrole', verifyToken, GetRoleUsers)
 router.put('/editusers/:id', upload1.single('profilePicture'), UserEdit)
 router.post('/addrole', Addrole)
 router.get('/getrole', Getrole)
+router.post('/enable-2fa/:id', enableTwoFactorAuth);
+router.post('/verify-2fa', verifyTwoFactorAuth);
+
 
 
 module.exports = router

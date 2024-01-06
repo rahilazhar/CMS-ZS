@@ -97,10 +97,21 @@ const logincontroller = async (req, res) => {
             return res.status(400).send('Invalid credentials');
         }
 
+        // Check if 2FA is enabled for the user
+        if (user.isTwoFactorEnabled) {
+            // The front-end should handle this case and ask the user for the 2FA token
+            return res.status(200).json({
+                twoFactorRequired: true,
+                userId: user._id
+            });
+        }
+
+
+         // If 2FA is not enabled, proceed as usual
         const token = JWT.sign({ id: user._id, role: user.role }, process.env.JWT_Key, { expiresIn: '7d' });
         // Replace 'your_jwt_secret' with a real secret key
 
-        res.status(200).json({ token, role: user.role, email: user.email, picture: user.profilePicture });
+        res.status(200).json({Message: "Loginn" , token, id:user._id , role: user.role, email: user.email, picture: user.profilePicture });
     } catch (error) {
         res.status(500).send('Server error');
     }
