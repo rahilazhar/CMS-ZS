@@ -39,6 +39,9 @@ function LoginPage() {
 
         if (role === "1") {
           navigate('/')
+         
+        }else if (role === 'Subadmin'){
+          navigate('/addcase')
         } else if (role !== 0) {
           navigate('/role')
         } else {

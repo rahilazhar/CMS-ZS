@@ -43,7 +43,11 @@ const Editrequest = () => {
 
     return (
         <div className=' w-full'>
-            <div className=' bg-purple-300 mb-3 text-center p-3 rounded text-xl  font-bold'>Pending Approvals</div>
+            <section className="p-4 text-center">
+                <div className="bg-gray-200 shadow-xl p-4 font-semibold text-2xl admin-dashboard-title">
+                   Pending Approvals
+                </div>
+            </section>
             <table className="min-w-full border">
                 <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
                     #
@@ -79,7 +83,7 @@ const Editrequest = () => {
 
                 {
                     data.map((item, index) => {
-                        console.log(item, 'item______')
+
 
                         return (
                             <>

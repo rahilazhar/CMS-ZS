@@ -1,5 +1,5 @@
 // reducers.js
-import { SET_ENTRIES_ALL, SET_ERROR, SET_TODAY_CASES, SET_LOADING, DELETE_ENTRY, SET_ROLES, POST_ROLE_SUCCESS, FETCH_USER_SUCCESS, UPDATE_USER_SUCCESS } from '../Actions/actionTypes';
+import { SET_ENTRIES_ALL, SET_ERROR, SET_TODAY_CASES, SET_LOADING, DELETE_ENTRY, SET_ROLES, POST_ROLE_SUCCESS, FETCH_USER_SUCCESS, UPDATE_USER_SUCCESS , GET_ALL_PENDING_REQUEST } from '../Actions/actionTypes';
 
 const initialState = {
   entriesAll: [],
@@ -9,6 +9,7 @@ const initialState = {
   currentUser: {},
   loading: false,   // Add loading to your state
   error: null,
+  pendingrequest:[]
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -32,6 +33,9 @@ const rootReducer = (state = initialState, action) => {
     case UPDATE_USER_SUCCESS:
       // Update the user data in your state as needed
       return { ...state, currentUser: { ...state.currentUser, ...action.payload } };
+    case GET_ALL_PENDING_REQUEST :
+      return {...state  , pendingrequest:action.payload}
+
 
     case SET_LOADING:
       return { ...state, loading: action.payload }; // Handle SET_LOADING

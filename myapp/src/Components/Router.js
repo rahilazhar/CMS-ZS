@@ -32,10 +32,10 @@ const Router = () => {
     <>
       <Routes>
         <Route path='/' element={<ProtectedRoute component={Home} allowedRoles={["1"]} />} />
-        <Route path='/addcase' element={<ProtectedRoute component={Addcase} allowedRoles={["1"]} />} />
+        <Route path='/addcase' element={<ProtectedRoute component={Addcase} allowedRoles={["1" , "Subadmin"]} />} />
         {/* <Route path='/viewcases' element={<DataTable />} />/ */}
 
-        <Route path='/viewcases' element={<ProtectedRoute component={Newcaseget} allowedRoles={["1"]} />} />
+        <Route path='/viewcases' element={<ProtectedRoute component={Newcaseget} allowedRoles={["1" , "Subadmin"]} />} />
         <Route path='/viewdetails/:caseId/:title' element={<ProtectedRoute component={History} allowedRoles={["1"]} />} />
         <Route path='/Factsheet/:caseId/:title' element={<ProtectedRoute component={Factsheet} allowedRoles={["1"]} />} />
         <Route path='/factsheetview/:caseId' element={<ProtectedRoute component={Factsheetview} allowedRoles={["1"]} />} />
@@ -44,7 +44,7 @@ const Router = () => {
         <Route path='/todayhearings' element={<ProtectedRoute component={TodayHearings} allowedRoles={["1"]} />} />
         <Route path='/*' element={<Errorpage />} />
         <Route path='/vmodal' element={<ProtectedRoute component={ViewcaseModal} allowedRoles={["1"]} />} />
-        <Route path='/Editcase/:id' element={<ProtectedRoute component={Editcase} allowedRoles={["1"]} />} />
+        <Route path='/Editcase/:id' element={<ProtectedRoute component={Editcase} allowedRoles={["1" , "Subadmin"]} />} />
         <Route path='/editreq' element={<ProtectedRoute component={Editrequest} allowedRoles={["1"]} />} />
         {/* <Route path='/user' element={<ProtectedRoute component={Usersview} allowedRoles={["1"]} />} /> */}
         <Route path='/allusers' element={<ProtectedRoute component={Getusers} allowedRoles={["1"]} />} />

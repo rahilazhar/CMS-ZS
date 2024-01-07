@@ -1,6 +1,16 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react';
+import { UserContext } from '../../Context/Usercontext';
+import axios from 'axios';
+import { urlapi } from '../../Components/Menu';
+import { Link } from 'react-router-dom';
 
 const DashboardCards4 = () => {
+    const { Getallusers , getuserdata} = useContext(UserContext);
+
+    useEffect(() => {
+        Getallusers();
+    }, []);
+
     return (
         <>
             <div className="rounded-sm border border-stroke bg-red-50 py-6 px-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -31,7 +41,7 @@ const DashboardCards4 = () => {
                 <div className="mt-4 flex items-end justify-between">
                     <div>
                         <h4 className="text-title-md font-bold text-black dark:text-white">
-                            5
+                            {getuserdata.length}
                         </h4>
                         <span className="text-sm font-medium">Total Users</span>
                     </div>

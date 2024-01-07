@@ -4,6 +4,7 @@ import DashboardCards from "../Components/DashboardCards/DashboardCards";
 import DashboardCards2 from "../Components/DashboardCards/DashboardCards2";
 import DashboardCards3 from "../Components/DashboardCards/DashboardCards3";
 import DashboardCards4 from "../Components/DashboardCards/DashboardCards4";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   useEffect(() => {
@@ -36,9 +37,13 @@ const Home = () => {
             <div className="dashboard-card opacity-0 scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
               <DashboardCards2 />
             </div>
-            <div className="dashboard-card opacity-0 scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
-              <DashboardCards3 />
+
+            <div className="dashboard-card cursor-pointer opacity-0 scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+              <Link to='/editreq'>
+                <DashboardCards3 />
+              </Link>
             </div>
+
             <div className="dashboard-card opacity-0 scale-95 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
               <DashboardCards4 />
             </div>

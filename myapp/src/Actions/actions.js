@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
 
-import { SET_ENTRIES_ALL, SET_ERROR, SET_TODAY_CASES, SET_LOADING, DELETE_ENTRY, SET_ROLES, POST_ROLE_SUCCESS, FETCH_USER_SUCCESS, UPDATE_USER_SUCCESS } from './actionTypes';
+import { SET_ENTRIES_ALL, SET_ERROR, SET_TODAY_CASES, SET_LOADING, DELETE_ENTRY, SET_ROLES, POST_ROLE_SUCCESS, FETCH_USER_SUCCESS, UPDATE_USER_SUCCESS, GET_ALL_PENDING_REQUEST } from './actionTypes';
 
 export const setEntriesAll = (data) => ({
   type: SET_ENTRIES_ALL,
@@ -47,6 +47,12 @@ export const fetchUserSuccess = (userData) => ({
 
 export const updateUserSuccess = (userData) => ({
   type: UPDATE_USER_SUCCESS,
+  payload: userData,
+});
+
+
+export const getallpendingrequests = (userData) => ({
+  type: GET_ALL_PENDING_REQUEST,
   payload: userData,
 });
 
@@ -126,7 +132,7 @@ export const fetchUser = (id, urlapi) => async (dispatch) => {
   }
 };
 
-export const updateUser = (id, formData, urlapi , setIsLoading) => async (dispatch) => {
+export const updateUser = (id, formData, urlapi, setIsLoading) => async (dispatch) => {
   try {
     setIsLoading(true)
     const response = await fetch(`${urlapi}/api/v1/auth/editusers/${id}`, {
@@ -144,3 +150,14 @@ export const updateUser = (id, formData, urlapi , setIsLoading) => async (dispat
   }
 };
 
+export const pendingrequests = (urlapi) => async (dispatch) => {
+  try {
+ 
+    const response = await fetch(`${urlapi}/api/v1/auth/pendingrequests`)
+    const data = await response.json();
+    dispatch(getallpendingrequests(data));
+  } catch (error) {
+    dispatch(setError(error));
+    toast.error('An error occurred during the Fetching');
+  }
+}
