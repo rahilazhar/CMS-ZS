@@ -4,10 +4,6 @@ const EditRequest = require('../Models/EditrequestSchema')
 const Userschema = require('../Models/Userschema')
 
 
-
-
-
-
 const Caseentries = async (req, res) => {
     try {
         const {
@@ -40,7 +36,8 @@ const Caseentries = async (req, res) => {
             title,
             Clientname,
             Suitno,
-            Valueofsuit
+            Valueofsuit,
+            isEditApproved
         } = req.body
 
         if (
@@ -126,7 +123,8 @@ const Caseentries = async (req, res) => {
             Clientname,
             Suitno,
             Valueofsuit,
-            wordFilePath
+            wordFilePath,
+            isEditApproved
 
         });
 
@@ -143,6 +141,84 @@ const Caseentries = async (req, res) => {
         return res.status(500).send({ Message: "Internal Server Error" });
     }
 };
+
+
+
+// Get Entries both on the base of id and all entries
+const Getentries = async (req, res) => {
+    // Check if an ID is provided in the request
+    const entryId = req.params.id;
+
+    if (entryId) {
+        // Find entry by ID
+        try {
+            const entry = await Caseentryschema.findById(entryId);
+            if (entry) {
+                return res.status(200).send(entry);
+            } else {
+                return res.status(404).send({ Message: "Entry Not Found" });
+            }
+        } catch (error) {
+            // Handle possible errors, like invalid MongoDB ID format
+            return res.status(400).send({ Message: "Invalid ID Format" });
+        }
+    } else {
+        // Find all entries if no ID is provided
+        const Findentries = await Caseentryschema.find();
+        if (Findentries.length > 0) {
+            return res.status(200).send(Findentries);
+        } else {
+            return res.status(401).send({ Message: "No Cases Found" });
+        }
+    }
+};
+
+
+
+// this code is allow only one time to allow user to edit 
+const Editallentries = async (req, res) => {
+    const { id } = req.params; // Case ID
+    const updateData = req.body;
+    const userId = req.user.id; // User ID from JWT token
+
+    try {
+        const caseEntry = await Caseentryschema.findById(id);
+
+        // Find the user based on the ID from JWT token
+        const approvedUser = await Userschema.findById(userId);
+
+        if (!approvedUser) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        if (req.file) {
+            updateData.wordFilePath = req.file.path;
+        }
+
+        if (approvedUser.isUserApproved) {
+            // Update all entries if the user is approved
+            const updatedEntry = await Caseentryschema.updateMany({ _id: id }, updateData, { new: true });
+            return res.status(200).send({ Message: "Successfully Updated", updatedEntry });
+        }
+
+        // Check if this specific entry is approved for editing
+        if (caseEntry.isEditApproved) {
+            const updatedEntry = await Caseentryschema.findByIdAndUpdate(id, updateData, { new: true });
+            caseEntry.isEditApproved = false;
+            await caseEntry.save();
+            return res.status(200).send({ Message: "Successfully Updated", updatedEntry });
+
+        } else {
+            return res.status(403).send({ message: "Edit not approved by admin" });
+        }
+    } catch (error) {
+        res.status(500).send({ message: "Error updating the case entry", error: error.message });
+    }
+}
+
+
+
+
 
 const deleteCaseEntry = async (req, res) => {
     try {
@@ -178,33 +254,7 @@ const deleteCaseEntry = async (req, res) => {
 //     }
 // }
 
-const Getentries = async (req, res) => {
-    // Check if an ID is provided in the request
-    const entryId = req.params.id;
 
-    if (entryId) {
-        // Find entry by ID
-        try {
-            const entry = await Caseentryschema.findById(entryId);
-            if (entry) {
-                return res.status(200).send(entry);
-            } else {
-                return res.status(404).send({ Message: "Entry Not Found" });
-            }
-        } catch (error) {
-            // Handle possible errors, like invalid MongoDB ID format
-            return res.status(400).send({ Message: "Invalid ID Format" });
-        }
-    } else {
-        // Find all entries if no ID is provided
-        const Findentries = await Caseentryschema.find();
-        if (Findentries.length > 0) {
-            return res.status(200).send(Findentries);
-        } else {
-            return res.status(401).send({ Message: "No Cases Found" });
-        }
-    }
-};
 
 
 const Getentriesonthebaseofid = async (req, res) => {
@@ -550,45 +600,7 @@ const gettodayhearings = async (req, res) => {
 // }
 
 
-// this code is allow only one time to allow user to edit 
-const Editallentries = async (req, res) => {
-    const { id } = req.params; // Case ID
-    const updateData = req.body;
-    const userId = req.user.id; // User ID from JWT token
 
-    try {
-        const caseEntry = await Caseentryschema.findById(id);
-
-        // Find the user based on the ID from JWT token
-        const approvedUser = await Userschema.findById(userId);
-
-        if (!approvedUser) {
-            return res.status(404).send({ message: "User not found" });
-        }
-
-        if (req.file) {
-            updateData.wordFilePath = req.file.path;
-        }
-
-        if (approvedUser.isUserApproved) {
-            // Update all entries if the user is approved
-            const updatedEntry = await Caseentryschema.updateMany({ _id: id }, updateData, { new: true });
-            return res.status(200).send({ Message: "Successfully Updated", updatedEntry });
-        }
-       
-        // Check if this specific entry is approved for editing
-        if (caseEntry.isEditApproved) {
-            const updatedEntry = await Caseentryschema.findByIdAndUpdate(id, updateData, { new: true });
-            caseEntry.isEditApproved = false;
-            await caseEntry.save();
-            return res.status(200).send({ Message: "Successfully Updated", updatedEntry });
-        } else {
-            return res.status(403).send({ message: "Edit not approved by admin" });
-        }
-    } catch (error) {
-        res.status(500).send({ message: "Error updating the case entry", error: error.message });
-    }
-}
 
 
 
@@ -648,26 +660,7 @@ const RequestEdit = async (req, res) => {
 }
 
 
-
-
-
-
-
-
-
-// const Approvedrequest = async (req, res) => {
-//     const { userId } = req.user.id; // Assuming you pass the user ID
-
-//     try {
-//         // Find all case entries by user and set isUserApproved to true
-//         await Caseentryschema.updateMany({ userId: userId }, { $set: { isUserApproved: true } });
-
-//         res.status(200).send({ message: "User approved for editing" });
-//     } catch (error) {
-//         res.status(500).send({ message: "Error approving user", error: error.message });
-//     }
-// }
-
+// user approved and Not approved
 const Approvedrequest = async (req, res) => {
     try {
         // Assuming the user ID is passed as a parameter in the URL, e.g., /users/:userId
@@ -684,9 +677,6 @@ const Approvedrequest = async (req, res) => {
 
 
 
-
-
-
 const ListPendingEditRequests = async (req, res) => {
     try {
         const pendingRequests = await EditRequest.find({ status: 'pending' }).populate('caseId').populate('userId', 'name');
@@ -697,69 +687,6 @@ const ListPendingEditRequests = async (req, res) => {
 }
 
 
-// const UpdateRequestStatus = async (req, res) => {
-//     const { id } = req.params; // This is the Case ID
-//     const { status } = req.body; // Status to be updated: 'approved' or 'rejected'
-
-//     if (!['approved', 'rejected'].includes(status)) {
-//         return res.status(400).send({ message: "Invalid status update" });
-//     }
-
-//     try {
-//         // Find the edit request by case ID and status 'pending'
-//         const editRequest = await EditRequest.findOne({ caseId: id, status: 'pending' });
-
-
-
-//         if (!editRequest) {
-//             return res.status(404).send({ message: "No pending edit request found for this case" });
-//         }
-
-
-
-//         // Update the status to either 'approved' or 'rejected'
-//         editRequest.status = status;
-//         await editRequest.save();
-
-
-
-//         res.status(200).send({ message: `Edit request for the case ${status}`, editRequest });
-//     } catch (error) {
-//         res.status(500).send({ message: `Error updating edit request status`, error: error.message });
-//     }
-// };
-
-
-// const UpdateRequestStatus = async (req, res) => {
-//     const { id } = req.params; // This is the Case ID
-//     const { status } = req.body; // Status to be updated: 'approved' or 'rejected'
-
-//     if (!['approved', 'rejected'].includes(status)) {
-//         return res.status(400).send({ message: "Invalid status update" });
-//     }
-
-//     try {
-//         // Find the edit request by case ID and status 'pending'
-//         const editRequest = await EditRequest.findOne({ caseId: id, status: 'pending' });
-
-//         if (!editRequest) {
-//             return res.status(404).send({ message: "No pending edit request found for this case" });
-//         }
-
-//         // Update the status to either 'approved' or 'rejected'
-//         editRequest.status = status;
-//         await editRequest.save();
-
-//         // if (status === 'rejected') {
-//         //     // If the status is 'rejected', remove the document from the collection
-//         //     await EditRequest.deleteOne({ _id: editRequest._id });
-//         // }
-
-//         res.status(200).send({ message: `Edit request for the case ${status}`, editRequest });
-//     } catch (error) {
-//         res.status(500).send({ message: `Error updating edit request status`, error: error.message });
-//     }
-// };
 
 const UpdateRequestStatus = async (req, res) => {
     const { id } = req.params; // This is the Case ID

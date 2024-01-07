@@ -134,6 +134,11 @@ const Caseentries = new mongoose.Schema(
       required: false
     },
 
+    isEditApproved:{
+      type:Boolean,
+      default:false
+    },
+
 
 
     history: [ // Initialize history as an empty array

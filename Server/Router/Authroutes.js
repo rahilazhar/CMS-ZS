@@ -5,8 +5,6 @@ const { auth, verifyToken } = require('../Middlewares/Verification')
 const { Editrequestget } = require('../Controllers/AdminController')
 const { Getallusers, Addrole, Getrole, UserEdit } = require('../Controllers/Usercontroller')
 const path = require("path");
-const Docxtemplater = require('docxtemplater');
-const fs = require('fs');
 const multer = require('multer')
 const { enableTwoFactorAuth } = require('../Controllers/Twofactor')
 const {verifyTwoFactorAuth} = require('../Middlewares/Verifytwofactor')
@@ -31,8 +29,7 @@ const router = express.Router()
 router.post('/registration', upload.single('profilePicture'), UserRegistration)
 router.post('/login', logincontroller)
 
-// Case Routes
-router.post('/entries', upload.single('wordFile'), Caseentries)
+
 
 
 
@@ -60,12 +57,23 @@ router.get('/downloadWord/:filename', (req, res) => {
 });
 
 
+
+//Add  Case Routes  (Done)
+router.post('/entries', upload.single('wordFile'), Caseentries) 
+
+// Get all the and on the base of id if id gives on the end then get on id and if not provide id then get all the cases (Done)
 router.get('/getentries/:id?', Getentries);
+
+// Edit Entries Route with picture
 router.put('/editentries/:id', auth, upload.single('wordFile'), Editallentries)
+
+// Req approve pending and update routes
 router.post('/reqedit/:id', auth, RequestEdit)
 router.post('/approvedreq/:userId', Approvedrequest)
 router.get('/pendingrequests', ListPendingEditRequests)
 router.post('/updaterequest/:id', UpdateRequestStatus) // A general route for both approval and rejection
+
+
 router.get('/editreqget', Editrequestget)
 router.get('/getentriesid/:id', Getentriesonthebaseofid)
 router.get('/gettodayentries', GetTodayEntries)
