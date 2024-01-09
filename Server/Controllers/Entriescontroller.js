@@ -40,6 +40,9 @@ const Caseentries = async (req, res) => {
             isEditApproved
         } = req.body
 
+        const userName = req.user.name
+        const userId = req.user.id
+
         if (
             // !NatureofSuit ||
             // !PlaintiffsBackground ||
@@ -92,6 +95,9 @@ const Caseentries = async (req, res) => {
         }
 
 
+
+
+
         const newCaseEntry = new Caseentryschema({
             NatureofSuit,
             PlaintiffsBackground,
@@ -124,7 +130,9 @@ const Caseentries = async (req, res) => {
             Suitno,
             Valueofsuit,
             wordFilePath,
-            isEditApproved
+            isEditApproved,
+            addedBy: userName,
+            userId: userId
 
         });
 
@@ -616,6 +624,7 @@ const gettodayhearings = async (req, res) => {
 const RequestEdit = async (req, res) => {
     const { id } = req.params; // Case ID
     const userId = req.user.id; // User ID
+    const name = req.user.name
 
     try {
         // Check if there is an existing edit request for the same case and user
@@ -628,7 +637,9 @@ const RequestEdit = async (req, res) => {
         // If no existing request, create a new edit request
         const newEditRequest = new EditRequest({
             caseId: id,
-            userId: userId
+            userId: userId,
+            userName: name
+
         });
 
         await newEditRequest.save();

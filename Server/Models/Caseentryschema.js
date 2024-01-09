@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema
 
 const Caseentries = new mongoose.Schema(
   {
@@ -134,9 +135,19 @@ const Caseentries = new mongoose.Schema(
       required: false
     },
 
-    isEditApproved:{
-      type:Boolean,
-      default:false
+    isEditApproved: {
+      type: Boolean,
+      default: false
+    },
+
+    addedBy: {
+      type: String,
+      required: true
+    },
+
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'users' // assuming 'users' is the name of your user model
     },
 
 

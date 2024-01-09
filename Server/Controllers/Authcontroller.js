@@ -108,7 +108,7 @@ const logincontroller = async (req, res) => {
 
 
          // If 2FA is not enabled, proceed as usual
-        const token = JWT.sign({ id: user._id, role: user.role }, process.env.JWT_Key, { expiresIn: '7d' });
+        const token = JWT.sign({ id: user._id, role: user.role , name:user.name }, process.env.JWT_Key, { expiresIn: '7d' });
         // Replace 'your_jwt_secret' with a real secret key
 
         res.status(200).json({Message: "Loginn" , token, id:user._id , role: user.role, email: user.email, picture: user.profilePicture });

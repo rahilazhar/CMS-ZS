@@ -7,7 +7,7 @@ const { Getallusers, Addrole, Getrole, UserEdit } = require('../Controllers/User
 const path = require("path");
 const multer = require('multer')
 const { enableTwoFactorAuth } = require('../Controllers/Twofactor')
-const {verifyTwoFactorAuth} = require('../Middlewares/Verifytwofactor')
+const { verifyTwoFactorAuth } = require('../Middlewares/Verifytwofactor')
 
 
 const storage = multer.diskStorage({
@@ -37,7 +37,7 @@ router.post('/login', logincontroller)
 router.get('/downloadWord/:filename', (req, res) => {
     const filename = req.params.filename;
     try {
-        const filePath = path.join(__dirname, '..',  'uploads', filename);
+        const filePath = path.join(__dirname, '..', 'uploads', filename);
 
 
         // Set the response headers for file download
@@ -59,7 +59,7 @@ router.get('/downloadWord/:filename', (req, res) => {
 
 
 //Add  Case Routes  (Done)
-router.post('/entries', upload.single('wordFile'), Caseentries) 
+router.post('/entries', upload.single('wordFile'), auth, Caseentries)
 
 // Get all the and on the base of id if id gives on the end then get on id and if not provide id then get all the cases (Done)
 router.get('/getentries/:id?', Getentries);

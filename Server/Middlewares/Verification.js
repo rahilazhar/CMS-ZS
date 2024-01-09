@@ -6,7 +6,7 @@ const auth = async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer ', '');
         // console.log('Token:', token); // Log the token
         const decoded = jwt.verify(token, process.env.JWT_Key); // Ensure secret key matches
-        req.user = { id: decoded.id };
+        req.user = { id: decoded.id , name:decoded.name };
         next();
     } catch (e) {
         console.error('Authentication error:', e.message); // Log the error
