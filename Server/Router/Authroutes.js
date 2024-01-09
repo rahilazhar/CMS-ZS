@@ -96,7 +96,7 @@ router.get('/gettodayhearings', gettodayhearings)
 // Users Routes
 router.get('/getallusers/:id?', Getallusers)
 router.get('/getusersonrole', verifyToken, GetRoleUsers)
-router.put('/editusers/:id', upload1.single('profilePicture'), UserEdit)
+router.put('/editusers/:id', upload.single('profilePicture'), UserEdit)
 router.post('/addrole', Addrole)
 router.get('/getrole', Getrole)
 router.post('/enable-2fa/:id', enableTwoFactorAuth);
