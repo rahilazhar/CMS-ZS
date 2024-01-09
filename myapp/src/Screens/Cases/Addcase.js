@@ -5,8 +5,11 @@ import { Button, Select, MenuItem } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRoles } from "../../Actions/actions";
+import Helmet from 'react-helmet'
 
 const Addcase = () => {
+  const user = sessionStorage.getItem('user')
+  const token = user ? JSON.parse(user).token : null
   const courtNames = [
     "Supreme Court of Pakistan",
     "High Court, Lahore",
@@ -369,6 +372,9 @@ const Addcase = () => {
       const response = await fetch(`${urlapi}/api/v1/auth/entries`, {
         method: "POST",
         body: formData,
+        headers: {
+          'Authorization': `Bearer ${token}` // Include the token in the header
+        }
       });
 
       const data = await response.json();
@@ -433,6 +439,14 @@ const Addcase = () => {
   }, [dispatch]);
 
   return (
+    <>
+    <Helmet>
+    <title>Add Case</title>
+    <meta name="description" content='' />
+    {/* <meta name="keywords" content="keyword1, keyword2, keyword3" /> */}
+    {/* Add more meta tags as needed */}
+    <link rel="canonical" href={`http://localhost:3000/addcase`} />
+  </Helmet>
     <div className="bg-gray-100 min-h-screen w-full flex items-center justify-center">
       <div className="w-[1000px] mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold mb-4 text-center">Add Case</h2>
@@ -1104,6 +1118,7 @@ const Addcase = () => {
       </div>
       <Toaster />
     </div>
+    </>
   );
 };
 

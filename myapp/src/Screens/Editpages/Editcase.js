@@ -350,6 +350,7 @@ const Editcase = () => {
         formData.append("Suitno", suitno);
         formData.append("Valueofsuit", valueofsuit);
         formData.append("Clientname", clientname);
+        formData.append("NatureofSuit", suitno);
 
         // Append file if it exists
         if (wordfile) {

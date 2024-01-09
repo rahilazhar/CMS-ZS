@@ -42,78 +42,61 @@ const Editrequest = () => {
 
 
     return (
-        <div className=' w-full'>
-            <section className="p-4 text-center">
-                <div className="bg-gray-200 shadow-xl p-4 font-semibold text-2xl admin-dashboard-title">
-                   Pending Approvals
-                </div>
+        <div className='w-full p-4'>
+            <section className="text-center mb-8">
+                <h1 className="text-3xl font-semibold text-gray-800 bg-blue-100 rounded-md p-4 shadow-md">
+                    Pending Approvals
+                </h1>
             </section>
-            <table className="min-w-full border">
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    #
-                </th>
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Suit No
-                </th>
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Title
-                </th>
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Nature
-                </th>
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    prev-hearing
-                </th>
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    next-hearing
-                </th>
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Fact sheet
-                </th>
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Report
-                </th>
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                </th>
-
-                <th scope="col" className="p-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Approve
-                </th>
-
-                {
-                    data.map((item, index) => {
-
-
-                        return (
-                            <>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    <tr key={item._id} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100 text-center`}>
-
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{index + 1}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.caseId.Suitno}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.caseId.title}</td>
-                                        <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.caseId.nature}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.caseId.prevhearing}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.caseId.nexthearing}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.caseId.factsheet}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.caseId.progressreport}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.status}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            <select className='w-[150px] p-2' onChange={(e) => Approvehandler(e.target.value, item.caseId._id)}>
-                                                <option value="">--Select--</option>
-                                                <option value="approved">Approve</option>
-                                                <option value="rejected">Reject</option>
-                                            </select>
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-                            </>
-                        )
-                    })
-                }
-            </table>
+            <div className="overflow-x-auto rounded-lg shadow">
+                <table className="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">
+                                #
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Suit No
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Title
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Nature
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                User Name
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Status
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Approve
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((item, index) => (
+                            <tr key={item._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td className="px-6 py-4">{index + 1}</td>
+                                <td className="px-6 py-4">{item.caseId.Suitno}</td>
+                                <td className="px-6 py-4">{item.caseId.title}</td>
+                                <td className="px-6 py-4">{item.caseId.nature ? item.caseId.nature : item.caseId.NatureofSuit}</td>
+                                <td className="px-6 py-4">{item.userId.name}</td>
+                                <td className="px-6 py-4">{item.status}</td>
+                                <td className="px-6 py-4">
+                                    <select className='w-full p-2 text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:border-gray-400 focus:outline-none focus:border-blue-300'
+                                        onChange={(e) => Approvehandler(e.target.value, item.caseId._id)}>
+                                        <option value="">--Select--</option>
+                                        <option value="approved">Approve</option>
+                                        <option value="rejected">Reject</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

@@ -347,6 +347,14 @@ const Newcaseget = () => {
           >
             next-hearing
           </th>
+          {role == "1" && (
+            <th
+              scope="col"
+              className="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Added by
+            </th>
+          )}
           <th
             scope="col"
             className="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -413,6 +421,11 @@ const Newcaseget = () => {
                           ? entry.nextDateOfHearing
                           : entry.nexthearing}
                       </td>
+                      {role == "1" && (
+                        <td className="px- py-4 whitespace-normal text-sm text-gray-500">
+                          {entry.addedBy ? entry.addedBy : "SuperUser"}
+                        </td>
+                      )}
 
                       <td className="px- py-4 whitespace-normal text-sm text-gray-500">
                         <button onClick={() => natureviewhandler(entry)}>
